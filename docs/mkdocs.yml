@@ -4,6 +4,7 @@ theme:
   name: material
 docs_dir: .
 nav:
+  - Home: index.md
   - Overview: 00_overview/RS-00_overview.md
   - Requirements:
       - HLF: 02_requirements/RS-HLF.md
