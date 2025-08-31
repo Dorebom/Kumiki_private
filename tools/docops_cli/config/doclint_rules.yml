@@ -1,0 +1,37 @@
+# tools/docops_cli/config/doclint_rules.yml
+frontmatter:
+  required_keys: [id, title, type, status, version, created, updated, owner, tags]
+  optional_keys: [canonical_parent, refines, satisfies, depends_on, integrates_with, constrains, conflicts_with, supersedes]
+  forbid_nested: true
+  id_regex: '^(CR|RS|HLF|FR|NFR|CN|ADR|TRACE)-[A-Z0-9]{2,}-[0-9A-Za-z_.-]+$'
+  relation_keys: [refines, satisfies, depends_on, integrates_with, constrains, conflicts_with, supersedes]
+  arrays_must_be_strings: true
+paths:
+  include: ['docs/**/*.md']
+  exclude: ['**/.obsidian/**', 'node_modules/**', '**/README*.md']
+links:
+  check_relative: true
+  check_external: true
+  external_timeout_ms: 5000
+  fail_on_external_error: false
+plantuml:
+  enabled: true
+  fail_on_error: true
+graph:
+  enabled: true
+  fail_on_cycle: true
+performance:
+  pr_max_files: 2000
+  pr_time_budget_sec: 120
+severities:
+  DL001: ERROR
+  DL002: ERROR
+  DL003: ERROR
+  DL010: ERROR
+  DL011: ERROR
+  DL012: ERROR
+  DL013: ERROR
+  DL020: ERROR
+  DL101: WARN
+  DL102: WARN
+  DL201: WARN

@@ -1,0 +1,7 @@
+# eval/reach_goals.yaml
+# 任意: 重要ノードの期待往復経路ヒント（存在確認の厳格化）
+# 例: RS-FOO-01 は FR/NFR と TEST を必ず経由する 等
+goals:
+  - id_pattern: '^RS-.*'
+    must_include_layers: ['FR|NFR','TEST']
+    may_skip_layers: ['HLF','CN','DD','TRACE']

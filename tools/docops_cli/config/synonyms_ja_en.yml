@@ -1,0 +1,11 @@
+# tools/docops_cli/config/synonyms_ja_en.yml
+synonyms:
+  - [拡張容易性, Extensibility, extensible, 柔軟性]
+  - [可観測性, Observability, metrics, telemetry]
+  - [監査, Audit, 追跡, 台帳]
+  - [復元, Rollback, ロールバック, revert]
+  - [要件, Requirements, 仕様]
+  - [高位設計, HLF, high level design]
+  - [非機能, NFR, nonfunctional]
+  - [入口トレース, エントリトレース, entry trace]
+  - [整合, consistency, 一貫性]

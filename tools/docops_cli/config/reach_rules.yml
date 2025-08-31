@@ -1,0 +1,37 @@
+# tools/docops_cli/config/reach_rules.yml
+start_kinds: ['RS']
+important_kinds: ['RS','HLF','FR','NFR','CN']
+# Edge polarity normalization (FM orientation -> logical forward direction)
+edge_polarity:
+  refines: reverse     # lower->upper in FM; forward is upper->lower
+  satisfies: reverse   # lower->upper in FM; forward is upper->lower
+  depends_on: both
+  integrates_with: both
+  constrains: both     # allow traversal both directions via CN
+  conflicts_with: none
+  supersedes: none
+# Layer DFA (forward)
+steps:
+  - any_of: ['HLF']    # optional if skip_ok=true
+    skip_ok: true
+  - any_of: ['FR','NFR']
+    skip_ok: false
+  - any_of: ['CN']
+    skip_ok: true
+  - any_of: ['DD']
+    skip_ok: true
+  - any_of: ['TEST']
+    skip_ok: false
+  - any_of: ['TRACE']
+    skip_ok: true
+# Back path requirements (from TEST or TRACE back to RS)
+back_requirements:
+  from_kinds: ['TRACE','TEST']
+  via_any_of: ['FR','NFR']
+  to_kind: 'RS'
+# Aliases: map legacy edge semantics into normalized types
+edge_alias:
+  test_depends_on_fr_as_satisfies: true
+  trace_depends_on_test_as_integrates: true
+# Performance
+time_budget_sec: 60

@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "I18N Consistency Report v1",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "object",
+      "properties": {
+        "pairs": {
+          "type": "integer"
+        },
+        "missing": {
+          "type": "integer"
+        },
+        "id_mismatch": {
+          "type": "integer"
+        },
+        "relation_diff": {
+          "type": "integer"
+        },
+        "link_mismatch": {
+          "type": "integer"
+        },
+        "heading_divergence": {
+          "type": "integer"
+        },
+        "time_sec": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "pairs"
+      ]
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "ja_path": {
+            "type": "string"
+          },
+          "en_path": {
+            "type": "string"
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "relation_diff": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "ja_only": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "en_only": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "link_mismatch": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "locale": {
+                  "type": "string",
+                  "enum": [
+                    "ja",
+                    "en"
+                  ]
+                },
+                "path": {
+                  "type": "string"
+                },
+                "bad_target": {
+                  "type": "string"
+                },
+                "suggested": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "heading_jaccard": {
+            "type": "number"
+          },
+          "patches": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "stubs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "issues"
+        ]
+      }
+    }
+  },
+  "required": [
+    "summary",
+    "items"
+  ]
+}

@@ -1,0 +1,23 @@
+# eval/secscan_cases.yaml
+# 既知の正例/負例を用意（ダミー値のみ）。検知率と誤検知を計測。
+positives:
+  - path: "docs/guide.md"
+    content: "API Key: AIzaSyA1234567890abcdefABCDEF-123456abcd"
+    expect_rule: "SC110"
+  - path: "docs/keys.md"
+    content: "AWS Access Key ID: AKIAEXAMPLE1234567890"
+    expect_rule: "SC100"
+  - path: "docs/creds.md"
+    content: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BA...\n-----END PRIVATE KEY-----"
+    expect_rule: "SC120"
+  - path: "docs/card.md"
+    content: "test card 4242 4242 4242 4242"
+    expect_rule: "SX003"
+negatives:
+  - path: "docs/text.md"
+    content: "例: user@example.com などの参考ドメイン"
+  - path: "docs/mock.md"
+    content: "AKIA はAWSのキー形式の例です（ダミー）"
+metrics_target:
+  recall_min: 1.0
+  false_positive_max: 0.02

@@ -1,0 +1,29 @@
+name: docops_trace
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'tools/docops_cli/**'
+      - '.github/workflows/docops_trace.yml'
+jobs:
+  trace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          pip install -U pip
+          pip install networkx pyyaml markdown-it-py
+      - name: Build Graph & Suggest
+        run: |
+          python tools/docops_cli/trace.py build             --rules tools/docops_cli/config/trace_rules.yml             --out artifacts/trace --format json,md --emit-dot
+          python tools/docops_cli/trace.py suggest             --rules tools/docops_cli/config/trace_rules.yml             --out artifacts/trace --threshold 0.65 --strong-threshold 0.8
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docops-trace-artifacts
+          path: artifacts/trace

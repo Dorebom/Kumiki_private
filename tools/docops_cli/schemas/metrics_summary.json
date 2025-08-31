@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Kumiki Metrics Summary",
+  "type": "object",
+  "properties": {
+    "run": {
+      "type": "object",
+      "properties": {
+        "run_id": {
+          "type": "string"
+        },
+        "repo": {
+          "type": "string"
+        },
+        "branch": {
+          "type": "string"
+        },
+        "sha": {
+          "type": "string"
+        },
+        "workflow": {
+          "type": "string"
+        },
+        "ts_utc": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "ts_utc"
+      ]
+    },
+    "components": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "metrics": {
+            "type": "object"
+          },
+          "missing": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "metrics"
+        ]
+      }
+    },
+    "ok": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "run",
+    "components",
+    "ok"
+  ]
+}

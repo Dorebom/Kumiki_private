@@ -1,0 +1,29 @@
+# tools/docops_cli/config/i18n_rules.yml
+roots:
+  ja: 'docs/ja'
+  en: 'docs/en'
+headings:
+  levels: [1,2,3]
+  min_jaccard: 0.6
+slug:
+  ja:
+    kana_ascii: true
+    collapse_dashes: true
+    trim: true
+  en:
+    lower: true
+    collapse_dashes: true
+    trim: true
+links:
+  enforce_locale_scope: true
+  rewrite_cross_locale: true
+stubs:
+  status: 'needs-translation'
+  tags: ['i18n','stub']
+  dir_ja: 'docs/ja/_stubs'
+  dir_en: 'docs/en/_stubs'
+paths:
+  include: ['docs/ja/**/*.md','docs/en/**/*.md']
+  exclude: ['**/.obsidian/**','node_modules/**']
+performance:
+  time_budget_sec: 90

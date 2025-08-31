@@ -1,0 +1,26 @@
+name: docops_scale_test
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 15 * * *'  # 00:00 JST
+jobs:
+  scale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Install deps
+        run: |
+          pip install -U pip
+          pip install numpy pyyaml faiss-cpu
+      - name: Run scale test (300→600→1000)
+        env:
+          SEED: "42"
+        run: |
+          python tools/ci/scale_run.py --rules tools/docops_cli/config/scale_rules.yml --out artifacts/scale
+      - name: Upload scale artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docops-scale-report
+          path: artifacts/scale

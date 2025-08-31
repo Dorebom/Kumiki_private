@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Audit Event v1",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "enum": [
+        "1"
+      ]
+    },
+    "event_id": {
+      "type": "string"
+    },
+    "ts_utc": {
+      "type": "string"
+    },
+    "actor": {
+      "type": "string"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "create",
+        "modify",
+        "approve",
+        "publish",
+        "rollback",
+        "reject",
+        "archive"
+      ]
+    },
+    "subjects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "commit": {
+      "type": "string"
+    },
+    "pr": {
+      "type": "string"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "content_hash": {
+      "type": "string"
+    },
+    "prev_hash": {
+      "type": "string"
+    },
+    "hash": {
+      "type": "string"
+    },
+    "sig_alg": {
+      "type": "string"
+    },
+    "sig": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "version",
+    "event_id",
+    "ts_utc",
+    "actor",
+    "event_type",
+    "subjects",
+    "paths",
+    "content_hash",
+    "hash"
+  ]
+}

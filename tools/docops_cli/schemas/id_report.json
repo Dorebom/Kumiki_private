@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ID Check Report v1",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "object",
+      "properties": {
+        "files": {
+          "type": "integer"
+        },
+        "ids": {
+          "type": "integer"
+        },
+        "duplicates": {
+          "type": "integer"
+        },
+        "broken_refs": {
+          "type": "integer"
+        },
+        "gaps": {
+          "type": "integer"
+        },
+        "normalized": {
+          "type": "integer"
+        },
+        "time_sec": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "files",
+        "ids",
+        "duplicates",
+        "broken_refs"
+      ]
+    },
+    "duplicates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "canonical_path": {
+            "type": "string"
+          },
+          "rename_paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "suggested_new_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "patch_paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "canonical_path",
+          "rename_paths"
+        ]
+      }
+    },
+    "broken_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ref_in_path": {
+            "type": "string"
+          },
+          "missing_id": {
+            "type": "string"
+          },
+          "candidates": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "patch_path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ref_in_path",
+          "missing_id"
+        ]
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "series": {
+            "type": "string"
+          },
+          "missing_numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "required": [
+          "series",
+          "missing_numbers"
+        ]
+      }
+    },
+    "normalizations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "before": {
+            "type": "string"
+          },
+          "after": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "before",
+          "after"
+        ]
+      }
+    }
+  },
+  "required": [
+    "summary"
+  ]
+}

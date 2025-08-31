@@ -1,0 +1,17 @@
+# eval/id_cases.yaml
+# 重複/断リンク/欠番の既知ケースを定義し、再現率/誤修復率を測定する
+duplicates:
+  - id: "FR-LOG-12"
+    canonical: "docs/10_requirements/FR-LOG-12.md"
+    renames:
+      - "docs/20_design/DD-LOG-12.md"
+broken_refs:
+  - path: "docs/20_design/DD-LOG-12.md"
+    missing: "RS-OBS-03"
+    candidates: ["RS-OBS-03","RS-OBS-04"]
+gaps:
+  - series: "FR-LOG-{NN}"
+    missing: [13, 14]
+metrics_target:
+  duplicate_recall_min: 0.99
+  misrepair_max: 0.005

@@ -1,0 +1,24 @@
+# tools/docops_cli/config/impact_rules.yml
+threshold: 0.65
+strong_threshold: 0.80
+relation_weights:
+  refines: 0.9
+  satisfies: 1.0
+  depends_on: 0.6
+  integrates_with: 0.5
+  constrains: 0.4
+max_graph_depth: 3
+history:
+  lookback_commits: 500
+  cochange_decay: 0.8
+similarity:
+  use_bm25: true
+  use_ann: true
+highlight:
+  max_snippets: 2
+  window_chars: 120
+paths:
+  include: ['docs/**/*.md']
+  exclude: ['**/.obsidian/**','node_modules/**']
+performance:
+  time_budget_sec: 90

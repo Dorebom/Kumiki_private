@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Impact Report v1",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "object",
+      "properties": {
+        "changed_files": {
+          "type": "integer"
+        },
+        "candidates": {
+          "type": "integer"
+        },
+        "suggestions": {
+          "type": "integer"
+        },
+        "time_sec": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "changed_files",
+        "candidates"
+      ]
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_id": {
+            "type": "string"
+          },
+          "source_path": {
+            "type": "string"
+          },
+          "hunks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "impacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "target_id": {
+                  "type": "string"
+                },
+                "direction": {
+                  "type": "string",
+                  "enum": [
+                    "upstream",
+                    "downstream",
+                    "lateral"
+                  ]
+                },
+                "score": {
+                  "type": "number"
+                },
+                "features": {
+                  "type": "object"
+                },
+                "highlight_path": {
+                  "type": "string"
+                },
+                "patch_path": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "target_id",
+                "direction",
+                "score"
+              ]
+            }
+          }
+        },
+        "required": [
+          "source_id",
+          "impacts"
+        ]
+      }
+    }
+  },
+  "required": [
+    "summary",
+    "changes"
+  ]
+}

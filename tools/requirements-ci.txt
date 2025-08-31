@@ -1,0 +1,13 @@
+# tools/requirements-ci.txt
+# Pinned versions to ensure determinism
+pyyaml==6.0.1
+markdown-it-py==3.0.0
+regex==2024.7.24
+networkx==3.3
+numpy==1.26.4
+scikit-learn==1.4.2
+faiss-cpu==1.8.0
+python-slugify==8.0.4
+cryptography==42.0.5
+merklelib==1.0.3
+python-ulid==2.7.0

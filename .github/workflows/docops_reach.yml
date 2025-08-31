@@ -1,0 +1,29 @@
+name: docops_reach
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'tools/docops_cli/**'
+      - '.github/workflows/docops_reach.yml'
+jobs:
+  reach:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          pip install -U pip
+          pip install networkx pyyaml
+      - name: Build Graph (if not exists) & Verify
+        run: |
+          python tools/docops_cli/trace.py build             --rules tools/docops_cli/config/trace_rules.yml             --out artifacts/trace --format json
+          python tools/docops_cli/reach.py verify             --rules tools/docops_cli/config/reach_rules.yml             --graph artifacts/trace/graph.json             --out artifacts/reach --format json,md --emit-csv
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docops-reach-artifacts
+          path: artifacts/reach

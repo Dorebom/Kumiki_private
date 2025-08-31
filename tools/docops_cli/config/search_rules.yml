@@ -1,0 +1,52 @@
+# tools/docops_cli/config/search_rules.yml
+paths:
+  include: ['docs/**/*.md']
+  exclude: ['**/.obsidian/**', 'node_modules/**']
+normalization:
+  nfkc: true
+  fold_case: true
+  fullwidth_to_halfwidth: true
+  dash_unify: true
+  old_kanji_map_file: 'tools/docops_cli/config/normalize_ja.yml'
+tokenizer:
+  jp: {engine: 'sudachi', mode: 'A', ngram_fallback: [2,3]}
+  en: {engine: 'simple', stem: false}
+lexical:
+  bm25:
+    k1: 1.2
+    b: 0.75
+  fields:
+    title: 3.0
+    headings: 1.6
+    tags: 1.4
+    id: 2.0
+    body: 1.0
+semantic:
+  engine: 'faiss'   # 'faiss' | 'annoy' | 'scann'
+  dim: 768
+  metric: 'cosine'
+  model_hint: 'any-encoder-768'   # 実装依存で置換
+hybrid:
+  reranker: 'linear'   # 'linear' | 'wrr'
+  weights:
+    bm25_norm: 0.50
+    ann_sim: 0.35
+    phrase_bonus: 0.05
+    proximity: 0.05
+    field_boost: 0.03
+    graph_hint: 0.02
+  wrr:
+    alpha: 0.55
+    beta: 1.0
+highlight:
+  max_snippets: 2
+  window_chars: 80
+synonyms_file: 'tools/docops_cli/config/synonyms_ja_en.yml'
+stopwords:
+  jp: []
+  en: ['the','a','an','and','or','of','to','in','on','for','with']
+performance:
+  index_time_budget_sec: 120
+  query_p95_ms: 120
+output:
+  emit_meta: true

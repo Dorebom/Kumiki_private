@@ -1,0 +1,30 @@
+# tools/docops_cli/config/publish_rules.yml
+gate:
+  required:
+    - doclint
+    - trace
+    - indexing
+  optional:
+    - secscan
+    - reach
+    - idcheck
+    - i18n
+    - impact
+  thresholds:
+    secscan_high: 0         # 高度機密の発見件数（0でFail）
+    search_meta_required: true
+determinism:
+  tz: "UTC"
+  seed: 42
+paths:
+  doclint_report: "artifacts/doclint/report.json"
+  trace_graph: "artifacts/trace/graph.json"
+  search_meta: "artifacts/search/meta.json"
+  secscan_report: "artifacts/secscan/report.json"
+  reach_report: "artifacts/reach/report.json"
+  id_report: "artifacts/idcheck/report.json"
+  i18n_report: "artifacts/i18n/report.json"
+  impact_report: "artifacts/impact/report.json"
+publish:
+  include_dirs: ["docs", "artifacts"]
+  index_title: "Kumiki — CI Gate Summary"

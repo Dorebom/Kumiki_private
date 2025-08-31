@@ -1,0 +1,15 @@
+# eval/ai_patch_cases.yaml
+# 既知の検出→修正シナリオで、採用率/NG再発を測定するためのゴールドセット。
+cases:
+  - id: "APC-01"
+    trigger: "DocLint: missing 'satisfies'"
+    expect: "frontmatter追加"
+  - id: "APC-02"
+    trigger: "I18N: link locale mismatch"
+    expect: "リンクのロケール修正"
+  - id: "APC-03"
+    trigger: "SecScan: confidential URL"
+    expect: "URL削除 or プレースホルダ置換"
+metrics_target:
+  adoption_rate_min: 0.60
+  ng_recurrence_max_per_week: 0.05

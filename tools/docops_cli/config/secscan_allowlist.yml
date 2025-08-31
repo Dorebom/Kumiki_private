@@ -1,0 +1,11 @@
+# tools/docops_cli/config/secscan_allowlist.yml
+# フィンガープリント（sha256の先頭10-16）単位で例外登録。期限付きで運用。
+tokens:
+  - fp: "deadbeef01"
+    reason: "ドキュメント中の公開済みデモキー"
+    until: "2026-03-31"
+patterns:
+  - regex: "AKIA[0-9A-Z]{16}"
+    path_glob: "docs/samples/**"
+    reason: "パターン例示"
+    until: "2026-03-31"

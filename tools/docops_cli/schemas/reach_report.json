@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Roundtrip Reachability Report",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "object",
+      "properties": {
+        "evaluated": {
+          "type": "integer"
+        },
+        "roundtrip_ok": {
+          "type": "integer"
+        },
+        "roundtrip_rate": {
+          "type": "number"
+        },
+        "time_sec": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "evaluated",
+        "roundtrip_ok",
+        "roundtrip_rate"
+      ]
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "go_ok": {
+            "type": "boolean"
+          },
+          "back_ok": {
+            "type": "boolean"
+          },
+          "roundtrip_ok": {
+            "type": "boolean"
+          },
+          "missing_layers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "violations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "example_path_go": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "example_path_back": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "suggested_patches": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "roundtrip_ok"
+        ]
+      }
+    }
+  },
+  "required": [
+    "summary",
+    "nodes"
+  ]
+}

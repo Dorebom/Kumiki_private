@@ -1,0 +1,31 @@
+name: docops_impact
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'tools/docops_cli/**'
+      - '.github/workflows/docops_impact.yml'
+jobs:
+  impact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          pip install -U pip
+          pip install pyyaml numpy scikit-learn networkx
+      - name: Build Graph (if not exists) & Analyze Impact
+        run: |
+          python tools/docops_cli/trace.py build             --rules tools/docops_cli/config/trace_rules.yml             --out artifacts/trace --format json
+          python tools/docops_cli/impact.py analyze             --rules tools/docops_cli/config/impact_rules.yml             --graph artifacts/trace/graph.json             --diff-range "origin/main...HEAD"             --out artifacts/impact --format json,md --emit-snippets
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docops-impact-artifacts
+          path: artifacts/impact

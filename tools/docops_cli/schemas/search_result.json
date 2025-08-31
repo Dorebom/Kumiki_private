@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Search Result",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "path": {
+      "type": "string"
+    },
+    "score": {
+      "type": "number"
+    },
+    "features": {
+      "type": "object",
+      "properties": {
+        "bm25_norm": {
+          "type": "number"
+        },
+        "ann_sim": {
+          "type": "number"
+        },
+        "phrase_bonus": {
+          "type": "number"
+        },
+        "proximity": {
+          "type": "number"
+        },
+        "field_boost": {
+          "type": "number"
+        },
+        "graph_hint": {
+          "type": "number"
+        }
+      }
+    },
+    "highlights": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lang": {
+      "type": "string",
+      "enum": [
+        "ja",
+        "en",
+        "mixed"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "path",
+    "score"
+  ]
+}

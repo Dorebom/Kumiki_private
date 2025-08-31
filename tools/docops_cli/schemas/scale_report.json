@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Scale Report v1",
+  "type": "object",
+  "properties": {
+    "run": {
+      "type": "object",
+      "properties": {
+        "ts_utc": {
+          "type": "string"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "workflow": {
+          "type": "string"
+        },
+        "runner": {
+          "type": "string"
+        }
+      }
+    },
+    "sizes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer"
+          },
+          "ci_time_ms": {
+            "type": "number"
+          },
+          "components": {
+            "type": "object",
+            "properties": {
+              "doclint_ms": {
+                "type": "number"
+              },
+              "trace_ms": {
+                "type": "number"
+              },
+              "index_ms": {
+                "type": "number"
+              },
+              "secscan_ms": {
+                "type": "number"
+              },
+              "gate_ms": {
+                "type": "number"
+              },
+              "publish_ms": {
+                "type": "number"
+              }
+            }
+          },
+          "quality": {
+            "type": "object",
+            "properties": {
+              "doclint_errors": {
+                "type": "integer"
+              },
+              "secscan_high": {
+                "type": "integer"
+              },
+              "trace_cycles": {
+                "type": "integer"
+              },
+              "id_issues": {
+                "type": "integer"
+              },
+              "hit3_ratio": {
+                "type": "number"
+              },
+              "mrr": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "required": [
+          "size",
+          "ci_time_ms",
+          "quality"
+        ]
+      }
+    },
+    "bottlenecks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "component": {
+            "type": "string"
+          },
+          "slope_ms_per_doc": {
+            "type": "number"
+          },
+          "share_ratio": {
+            "type": "number"
+          },
+          "hint": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ok": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "sizes",
+    "ok"
+  ]
+}

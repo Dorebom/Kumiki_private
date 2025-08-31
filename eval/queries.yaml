@@ -1,0 +1,62 @@
+# eval/queries.yaml
+# 最低30件（JP/EN混在）
+- q: "日本語 検索 形態素 n-gram"
+  expects: ["CR-KMK-03"]
+- q: "入口トレース Graph 到達性"
+  expects: ["CR-KMK-02"]
+- q: "FrontMatter 必須キー DocLint"
+  expects: ["CR-KMK-01"]
+- q: "BM25 と ベクトル検索 を組み合わせる 方法"
+  expects: ["CR-KMK-03"]
+- q: "CI ゲート 静的公開 Pages"
+  expects: ["CR-KMK-01","CR-KMK-02"]
+- q: "satisfies refines depends_on 固定語彙"
+  expects: ["CR-KMK-02"]
+- q: "ハイライト スニペット 省略記号"
+  expects: ["CR-KMK-03"]
+- q: "Sudachi Kuromoji 違い"
+  expects: ["CR-KMK-03"]
+- q: "再ランク 近接 句一致"
+  expects: ["CR-KMK-03"]
+- q: "Graph DOT JSON schema"
+  expects: ["CR-KMK-02"]
+- q: "Obsidian 互換 FrontMatter フラット"
+  expects: ["CR-KMK-01"]
+- q: "固定語彙 refines satisfies depends_on"
+  expects: ["CR-KMK-02"]
+- q: "ANN cosine 類似度"
+  expects: ["CR-KMK-03"]
+- q: "評価 MRR nDCG Top3"
+  expects: ["CR-KMK-03"]
+- q: "監査 WORM 台帳"
+  expects: ["CR-KMK-01"]
+- q: "リンク健全性 外部リンク 404"
+  expects: ["CR-KMK-01"]
+- q: "循環検出 refines"
+  expects: ["CR-KMK-02"]
+- q: "孤立ノード 重要種 RS FR"
+  expects: ["CR-KMK-02"]
+- q: "ハイブリッド検索 重み bm25 ann"
+  expects: ["CR-KMK-03"]
+- q: "tags ブースト 検索"
+  expects: ["CR-KMK-03"]
+- q: "ID 形式 正規表現"
+  expects: ["CR-KMK-01"]
+- q: "往復到達 テスト ケース"
+  expects: ["CR-KMK-02"]
+- q: "多言語 JP EN 検索 パイプライン"
+  expects: ["CR-KMK-03"]
+- q: "page 内 検索 Obsidian"
+  expects: ["CR-KMK-03","CR-KMK-01"]
+- q: "差分パッチ unified diff 提案"
+  expects: ["CR-KMK-01"]
+- q: "Graph 入口 候補 提案"
+  expects: ["CR-KMK-02"]
+- q: "annoy faiss scann 違い"
+  expects: ["CR-KMK-03"]
+- q: "Top1 Top3 recall 指標"
+  expects: ["CR-KMK-03"]
+- q: "近接 ウィンドウ 8 語"
+  expects: ["CR-KMK-03"]
+- q: "語彙 エイリアス _vocabulary.yml"
+  expects: ["CR-KMK-02","CR-KMK-03"]

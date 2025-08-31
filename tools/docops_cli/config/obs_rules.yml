@@ -1,0 +1,21 @@
+# tools/docops_cli/config/obs_rules.yml
+required_components:
+  - doclint
+  - trace
+  - indexing
+  - gate
+labels:
+  allow: ['repo','branch','sha','run_id','workflow','job','cr_id','status','locale']
+timeseries:
+  include_metrics:
+    - kumiki.doclint.files_total_count
+    - kumiki.doclint.errors_count
+    - kumiki.trace.nodes_total_count
+    - kumiki.index.docs_indexed_count
+    - kumiki.gate.gate_ok_count
+  csv_delimiter: ','
+publish:
+  keep_generations_days: 365
+worm:
+  enable: true
+  audit_rules_path: tools/docops_cli/config/audit_rules.yml

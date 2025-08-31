@@ -1,0 +1,22 @@
+# tools/docops_cli/config/audit_rules.yml
+signing:
+  algo: 'ed25519'
+  pubkeys_pem: 'tools/docops_cli/config/audit_pubkeys.pem'
+  # CIの署名秘密鍵はSecretsから渡す（ここには置かない）
+paths:
+  include_evidence: true
+  evidence_min_count: 1
+  evidence_timeout_ms: 5000
+  target_globs: ['docs/**/*.md', 'artifacts/**']
+  ignore_globs: ['**/.obsidian/**', 'node_modules/**']
+hash:
+  event_hash_alg: 'sha256'
+  manifest_hash_alg: 'sha256'
+  merkle_fanout: 2
+policy:
+  append_only: true
+  fail_on_missing: true
+  fail_on_broken_chain: true
+  fail_on_unverifiable_sig: true
+performance:
+  time_budget_sec: 60

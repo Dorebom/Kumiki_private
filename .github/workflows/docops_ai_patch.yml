@@ -1,0 +1,31 @@
+name: docops_ai_patch
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'tools/**'
+      - '.github/workflows/docops_ai_patch.yml'
+jobs:
+  suggest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate AI patch proposals
+        env:
+          AI_PROVIDER: "openai"
+          AI_MODEL: "gpt-4o-mini"
+          AI_TEMPERATURE: "0.0"
+          AI_TOP_P: "1.0"
+          AI_SEED: "42"
+        run: |
+          python tools/docops_cli/ai_patch.py suggest             --rules tools/docops_cli/config/ai_patch_rules.yml             --prompts tools/docops_cli/prompts             --out artifacts/ai_patch --format json,patch
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docops-ai-patch
+          path: artifacts/ai_patch

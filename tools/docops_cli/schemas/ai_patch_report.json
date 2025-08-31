@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AI Patch Report v1",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "object",
+      "properties": {
+        "proposed": {
+          "type": "integer"
+        },
+        "accepted": {
+          "type": "integer"
+        },
+        "rejected": {
+          "type": "integer"
+        },
+        "time_sec": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "proposed"
+      ]
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "impact": {
+            "type": "number"
+          },
+          "severity": {
+            "type": "number"
+          },
+          "score": {
+            "type": "number"
+          },
+          "diff_file": {
+            "type": "string"
+          },
+          "post_checks": {
+            "type": "object"
+          },
+          "confidence": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "proposed",
+              "accepted",
+              "rejected"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "path",
+          "reason",
+          "diff_file",
+          "status"
+        ]
+      }
+    }
+  },
+  "required": [
+    "summary",
+    "items"
+  ]
+}

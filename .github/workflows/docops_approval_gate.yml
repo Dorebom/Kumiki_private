@@ -1,0 +1,38 @@
+name: docops_approval_gate
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled, edited]
+    paths:
+      - '**'
+      - '!**/*.png'
+      - '!**/*.jpg'
+      - '.github/workflows/docops_approval_gate.yml'
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  approval-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run approval gate
+        id: gate
+        run: |
+          python tools/ci/approval_gate.py tools/docops_cli/config/approval_rules.yml artifacts/approval || echo "gate_exit=$?" >> $GITHUB_OUTPUT
+      - name: Upload approval artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docops-approval
+          path: artifacts/approval
+      - name: Label when manual approval required
+        if: failure() || steps.gate.outputs.gate_exit == '2'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} --add-label "needs-approval" || true
+          gh pr edit ${{ github.event.pull_request.number }} --remove-label "automerge" || true

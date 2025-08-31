@@ -1,0 +1,4 @@
+# tools/docops_cli/config/normalize_ja.yml
+old_to_new_kanji:
+  髙: 高
+  𠮟: 叱

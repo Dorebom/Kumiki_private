@@ -1,0 +1,18 @@
+# eval/impact_cases.yaml
+# 既知の正例/負例を最小セットとして定義し、ヒット率/誤通知率を測定する
+positives:
+  - change: "docs/10_requirements/FR-LOG-12.md"
+    expect_impacts:
+      - id: "RS-OBS-03"
+        direction: "upstream"
+      - id: "TEST-LOG-12"
+        direction: "downstream"
+  - change: "docs/20_design/DD-LOG-12.md"
+    expect_impacts:
+      - id: "FR-LOG-12"
+        direction: "upstream"
+      - id: "TEST-LOG-12"
+        direction: "downstream"
+negatives:
+  - change: "docs/00_concept/ADR-000-template.md"
+    forbid_ids: ["RS-OBS-03","FR-LOG-12","TEST-LOG-12"]

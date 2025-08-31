@@ -1,0 +1,22 @@
+# eval/i18n_pairs.yaml
+# 既知の対訳ペア/差分をゴールドとして定義し、検出率/誤検知を評価する
+pairs:
+  - id: "FR-LOG-12"
+    ja_path: "docs/ja/10_requirements/FR-LOG-12.md"
+    en_path: "docs/en/10_requirements/FR-LOG-12.md"
+    relation_diff_expected: false
+  - id: "RS-OBS-03"
+    ja_path: "docs/ja/10_requirements/RS-OBS-03.md"
+    en_path: "docs/en/10_requirements/RS-OBS-03.md"
+    relation_diff_expected: true
+missing:
+  - id: "NFR-PERF-01"
+    missing_locale: "en"
+id_mismatch:
+  - ja_path: "docs/ja/20_design/DD-LOG-12.md"
+    en_path: "docs/en/20_design/DD-LOG-12.md"
+    ja_id: "DD-LOG-12"
+    en_id: "DD-LOG-012"
+metrics_target:
+  recall_min: 1.0
+  false_positive_max: 0.05

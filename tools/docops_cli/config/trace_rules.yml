@@ -1,0 +1,41 @@
+# tools/docops_cli/config/trace_rules.yml
+paths:
+  include: ['docs/**/*.md']
+  exclude: ['**/.obsidian/**', 'node_modules/**']
+node_kinds:
+  infer_from_id_prefix: true
+  mapping:
+    - prefix: 'CR'; kind: 'CR'
+    - prefix: 'RS'; kind: 'RS'
+    - prefix: 'HLF'; kind: 'HLF'
+    - prefix: 'FR'; kind: 'FR'
+    - prefix: 'NFR'; kind: 'NFR'
+    - prefix: 'CN'; kind: 'CN'
+    - prefix: 'ADR'; kind: 'ADR'
+    - prefix: 'TRACE'; kind: 'TRACE'
+    - prefix: 'DD'; kind: 'DD'
+    - prefix: 'TEST'; kind: 'TEST'
+relations:
+  allowed: ['refines','satisfies','depends_on','integrates_with','constrains','conflicts_with','supersedes']
+  integrates_with_undirected: false
+suggest:
+  threshold: 0.65
+  strong_threshold: 0.8
+  max_suggestions_per_file: 20
+  heading_hints: ['関連', '関連HLF', '関連FR', '関連NFR', 'Related', 'References']
+  alias_vocab_file: 'docs/_vocabulary.yml'
+  score_weights:
+    exact_id: 0.6
+    heading_hint: 0.2
+    structure_prox: 0.1
+    alias_hint: 0.1
+reachability:
+  roundtrip_required_pairs:
+    - from: 'RS'; via: ['HLF','FR|NFR','TEST|TRACE']; to: 'RS'
+  important_node_kinds: ['RS','HLF','FR','NFR','CN']
+  fail_on_cycle_for: ['refines','satisfies']
+output:
+  emit_dot: true
+  formats: ['json','md']
+performance:
+  time_budget_sec: 60

@@ -1,0 +1,32 @@
+name: docops_search
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'tools/docops_cli/**'
+      - 'eval/queries.yaml'
+      - '.github/workflows/docops_search.yml'
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          pip install -U pip
+          pip install pyyaml numpy scikit-learn faiss-cpu
+      - name: Build index
+        run: |
+          python tools/docops_cli/search.py index             --rules tools/docops_cli/config/search_rules.yml             --out artifacts/search
+      - name: Evaluate
+        run: |
+          python tools/docops_cli/search.py eval             --rules tools/docops_cli/config/search_rules.yml             --queries eval/queries.yaml             --out artifacts/search/eval_report.json --format json,md
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docops-search-artifacts
+          path: artifacts/search

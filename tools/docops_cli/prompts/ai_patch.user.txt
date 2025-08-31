@@ -1,0 +1,21 @@
+# 目的
+以下の検出トリガを解消する *unified diff* を生成してください。
+
+# 制約
+- 出力は unified diff のみ（説明・前置き禁止）
+- 1提案あたり <=120行, 変更ファイル<=5
+- FrontMatter の id/created/updated の変更は禁止
+- バイナリや画像は触らない
+
+# 入力
+[TRIGGERS JSON]
+{triggers}
+
+[対象ファイルの差分ハンク（周辺3行）]
+{hunks}
+
+[対象ファイルの FrontMatter 抜粋]
+{frontmatter}
+
+[Graph 近傍（id/title）]
+{neighbors}

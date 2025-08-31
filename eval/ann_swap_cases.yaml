@@ -1,0 +1,7 @@
+# eval/ann_swap_cases.yaml
+# 実運用では実データの一部をサンプルし、baseline=numpy, target={faiss,annoy,scann}でHit@3差を測る
+# このファイルは手順メモ用途（スクリプトは合成データを自動生成）
+notes: |
+  - baseline は numpy の全探索。
+  - target は ann_connectors.yml の backend を切替。
+  - degrade_tolerance (default 0.03) を超えた場合は CI fail。

@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SecScan Report v1",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "object",
+      "properties": {
+        "files": {
+          "type": "integer"
+        },
+        "findings": {
+          "type": "integer"
+        },
+        "high": {
+          "type": "integer"
+        },
+        "medium": {
+          "type": "integer"
+        },
+        "low": {
+          "type": "integer"
+        },
+        "time_sec": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "files",
+        "findings"
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule_id": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "secret",
+              "pii",
+              "confidential"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "path": {
+            "type": "string"
+          },
+          "line": {
+            "type": "integer"
+          },
+          "span": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "snippet_masked": {
+            "type": "string"
+          },
+          "fingerprint": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "rule_id",
+          "category",
+          "severity",
+          "path",
+          "line",
+          "fingerprint"
+        ]
+      }
+    }
+  },
+  "required": [
+    "summary",
+    "findings"
+  ]
+}

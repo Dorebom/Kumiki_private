@@ -1,0 +1,21 @@
+# tools/docops_cli/config/secscan_rules.yml
+paths:
+  include: ['**/*.md','**/*.yml','**/*.yaml','**/*.json','**/*.env','**/*.py','**/*.ts','**/*.js']
+  exclude: ['**/.git/**','**/.obsidian/**','node_modules/**','artifacts/**','**/*.png','**/*.jpg','**/*.pdf']
+fail_policy:
+  fail_on_high: true
+  fail_on_medium_count: 5
+detection:
+  entropy_threshold: 3.5
+  context_keywords: ['secret','token','password','apikey','authorization','bearer']
+  phone_country: ['JP','INTL']
+  email_allow_domains: ['example.com','example.org','example.net','test.co.jp']
+  internal_domains: ['corp.local','intranet','internal','vpn']
+  jwt_alg_allow: ['RS256','ES256','PS256']   # HS256等は注意喚起
+ocr:
+  enabled: false
+redaction:
+  mask_middle: true
+  mask_char: '•'
+report:
+  max_pr_comment_rules: 5

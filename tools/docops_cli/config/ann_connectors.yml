@@ -1,0 +1,21 @@
+# tools/docops_cli/config/ann_connectors.yml
+provider:
+  name: local-mini
+  dim: 256
+  seed: 42
+ann:
+  backend: faiss_flat     # numpy|faiss_flat|annoy|scann
+  metric: ip              # ip|l2|cos
+  params:
+    faiss:
+      nprobe: 1
+    annoy:
+      n_trees: 50
+      search_k: 0
+    scann:
+      leaves: 2000
+      reordering: 100
+eval:
+  topk: 3
+  max_queries: 200
+  degrade_tolerance: 0.03

@@ -1,0 +1,28 @@
+# tools/docops_cli/config/ai_patch_rules.yml
+provider:
+  name: openai
+  model: gpt-4o-mini
+  temperature: 0.0
+  top_p: 1.0
+  seed: 42
+limits:
+  max_files_per_proposal: 5
+  max_lines_per_proposal: 120
+  max_total_proposals: 10
+  allow_new_files: false
+scope:
+  allow_sections: ['frontmatter_safe','headings','links','typo','tags']
+  forbid_frontmatter_keys: ['id','created','updated']
+triggers:
+  from_reports: ['doclint','idcheck','i18n','secscan','impact']
+postcheck:
+  enable: true
+  doclint: true
+  trace: true
+  secscan: true
+  i18n: auto
+  minimize_diff: true
+  determinism: true
+outputs:
+  only_unified_diff: true
+  emit_rationale: short

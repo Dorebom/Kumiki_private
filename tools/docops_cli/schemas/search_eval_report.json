@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Search Eval Report",
+  "type": "object",
+  "properties": {
+    "queries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string"
+          },
+          "k": {
+            "type": "integer"
+          },
+          "expected": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "score": {
+                  "type": "number"
+                },
+                "rank": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "id",
+                "score",
+                "rank"
+              ]
+            }
+          }
+        },
+        "required": [
+          "q",
+          "expected",
+          "results"
+        ]
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "top1_recall": {
+          "type": "number"
+        },
+        "top3_recall": {
+          "type": "number"
+        },
+        "top10_recall": {
+          "type": "number"
+        },
+        "mrr_at_10": {
+          "type": "number"
+        },
+        "ndcg_at_10": {
+          "type": "number"
+        },
+        "jp_precision": {
+          "type": "number"
+        },
+        "jp_recall": {
+          "type": "number"
+        },
+        "jp_f1": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "top1_recall",
+        "top3_recall",
+        "top10_recall",
+        "mrr_at_10",
+        "ndcg_at_10"
+      ]
+    }
+  },
+  "required": [
+    "queries",
+    "metrics"
+  ]
+}

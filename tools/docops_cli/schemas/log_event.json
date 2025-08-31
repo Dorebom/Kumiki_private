@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Kumiki Log Event",
+  "type": "object",
+  "properties": {
+    "ts_utc": {
+      "type": "string"
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "INFO",
+        "WARN",
+        "ERROR"
+      ]
+    },
+    "component": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "ts_utc",
+    "level",
+    "component",
+    "message"
+  ]
+}

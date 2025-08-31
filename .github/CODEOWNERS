@@ -1,0 +1,8 @@
+# .github/CODEOWNERS
+# クリティカル領域は明確なオーナーを設定（Code Owners 承認を必須に）
+docs/**/security/**   @team-security
+docs/**/policy/**     @team-compliance
+docs/**/std/**        @team-standards
+tools/docops_cli/**   @team-platform
+.github/**            @team-platform
+docs/**               @team-docs

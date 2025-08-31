@@ -1,0 +1,28 @@
+name: docops_min
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'tools/docops_cli/**'
+      - '.github/workflows/docops_min.yml'
+jobs:
+  docops:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          pip install -U pip
+          pip install networkx pyyaml markdown-it-py plantuml-markdown
+      - name: DocLint
+        run: |
+          python tools/docops_cli/lint.py             --rules tools/docops_cli/config/doclint_rules.yml             --out artifacts/doclint --format json,md
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: doclint-artifacts
+          path: artifacts/doclint

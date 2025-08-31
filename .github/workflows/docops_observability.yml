@@ -1,0 +1,57 @@
+name: docops_observability
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'artifacts/**'
+      - 'tools/**'
+      - '.github/workflows/docops_observability.yml'
+  push:
+    branches: ['main']
+    paths:
+      - 'docs/**'
+      - 'artifacts/**'
+      - 'tools/**'
+      - '.github/workflows/docops_observability.yml'
+  schedule:
+    - cron: '0 6 * * 1'  # Weekly snapshot
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Collect metrics
+        run: |
+          python tools/ci/metrics_collect.py --rules tools/docops_cli/config/obs_rules.yml --out artifacts/metrics
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docops-metrics
+          path: artifacts/metrics
+
+  publish:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: [collect]
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: .
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Build public metrics tree
+        run: |
+          python tools/ci/metrics_publish.py --worm
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - name: Deploy to Pages
+        uses: actions/deploy-pages@v4

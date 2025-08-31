@@ -1,0 +1,10 @@
+{
+  "version": "1",
+  "ledger_path": "artifacts/ledger/audit.ndjson",
+  "entries": [],
+  "merkle_root": "",
+  "first_hash": "",
+  "last_hash": "",
+  "total_events": 0,
+  "signers": []
+}

@@ -1,0 +1,41 @@
+name: docops_ann_swap
+on:
+  pull_request:
+    paths:
+      - 'tools/docops_cli/connectors/**'
+      - 'tools/docops_cli/config/ann_connectors.yml'
+      - 'tools/docops_cli/ann_benchmark.py'
+      - '.github/workflows/docops_ann_swap.yml'
+jobs:
+  ann-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        backend: [numpy, faiss_flat]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Install base deps
+        run: |
+          pip install numpy pyyaml faiss-cpu
+      - name: (optional) Install Annoy
+        if: matrix.backend == 'annoy'
+        run: pip install annoy
+      - name: Run ANN benchmark
+        env:
+          BACKEND: ${{ matrix.backend }}
+        run: |
+          python - <<'PY'
+import yaml, os, json
+path = "tools/docops_cli/config/ann_connectors.yml"
+cfg = yaml.safe_load(open(path, "r", encoding="utf-8"))
+cfg["ann"]["backend"] = os.environ.get("BACKEND","numpy")
+open(path, "w", encoding="utf-8").write(yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False))
+PY
+          python tools/docops_cli/ann_benchmark.py --rules tools/docops_cli/config/ann_connectors.yml --out artifacts/ann_eval
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ann-eval-${{ matrix.backend }}
+          path: artifacts/ann_eval/ann_eval_report.json

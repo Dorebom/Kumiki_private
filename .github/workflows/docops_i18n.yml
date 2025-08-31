@@ -1,0 +1,28 @@
+name: docops_i18n
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'tools/docops_cli/**'
+      - '.github/workflows/docops_i18n.yml'
+jobs:
+  i18n:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Install deps
+        run: |
+          pip install -U pip
+          pip install pyyaml regex python-slugify markdown-it-py
+      - name: Verify & Suggest
+        run: |
+          python tools/docops_cli/i18n.py verify             --rules tools/docops_cli/config/i18n_rules.yml             --out artifacts/i18n --format json,md
+          python tools/docops_cli/i18n.py suggest             --rules tools/docops_cli/config/i18n_rules.yml             --out artifacts/i18n --emit-stubs
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docops-i18n-artifacts
+          path: artifacts/i18n

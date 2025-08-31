@@ -1,0 +1,27 @@
+# tools/docops_cli/config/approval_rules.yml
+critical:
+  path_globs:
+    - "docs/**/security/**"
+    - "docs/**/policy/**"
+    - "docs/**/std/**"
+    - ".github/**"
+    - "tools/docops_cli/**"
+  fm_forbid_modify: ["id","created","updated","canonical_parent"]
+  fm_sensitive:
+    status_publish: true       # status が published になる変更
+    remove_trace_fields: ["constrains","satisfies"]
+  checks:
+    doclint_errors_gt: 0
+    secscan_high_gt: 0
+    trace_cycles_gt: 0
+    id_issues_gt: 0            # duplicates + broken_refs
+  size_threshold:
+    max_changed_lines: 500
+    max_changed_files: 30
+automerge:
+  allow_label: "automerge"
+  require_all_checks_pass: true
+  only_for_risk: ["low"]
+manual_approval_label: "approved:human"
+labels:
+  needs_approval: "needs-approval"
