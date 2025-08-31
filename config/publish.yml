@@ -1,0 +1,6 @@
+forbid_in_public:
+  - "docs/private/**"
+  - "**/.obsidian/**"
+  - "**/*.key"
+  - "**/*.pem"
+  - "secrets/**"

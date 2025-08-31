@@ -1,0 +1,5 @@
+targets:
+  - root: docs
+    include: ["**/*.md"]
+    exclude: ["**/.obsidian/**", "private/**"]
+    default_canonical_parent: "RS-00_overview"

@@ -1,0 +1,3 @@
+relations:
+  upstream: [refines, derives_from, satisfies]
+  lateral:  [depends_on, integrates_with, constrains, conflicts_with, supersedes]

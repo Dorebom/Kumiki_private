@@ -1,0 +1,19 @@
+site_name: Kumiki Docs
+theme:
+  name: material
+nav:
+  - Overview: 00_overview/RS-00_overview.md
+  - Requirements:
+      - HLF: 02_requirements/RS-HLF.md
+      - FR:  02_requirements/RS-FR.md
+      - NFR: 02_requirements/RS-NFR.md
+      - CN:  02_requirements/RS-constraints.md
+  - Design:
+      - Architecture: 03_design/DD-03.1_arch_overview.md
+  - Test:
+      - Strategy: 04_test/overview.md
+markdown_extensions:
+  - toc:
+      permalink: true
+extra:
+  generator: false

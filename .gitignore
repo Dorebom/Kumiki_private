@@ -1,0 +1,20 @@
+# Build artifacts
+site/
+reports/
+index/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Node/build (if any)
+node_modules/
+dist/
+build/
+
+# OS/Editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,25 @@
+version: 1
+frontmatter:
+  flat: true
+  arrays_string_only: true
+  required_fields: [id, title, canonical_parent]
+  singletons: [canonical_parent]
+  allowed_relations:
+    - refines
+    - derives_from
+    - satisfies
+    - depends_on
+    - integrates_with
+    - constrains
+    - conflicts_with
+    - supersedes
+  forbidden_fields: [parents, children, nested]
+
+docops_cli:
+  ignore_paths:
+    - docs/.obsidian
+    - docs/private
+  checks:
+    - validate_frontmatter_schema
+    - validate_relations_vocabulary
+    - validate_single_canonical_parent
