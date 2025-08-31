@@ -1,6 +1,7 @@
 site_name: Kumiki Docs
 theme:
   name: material
+docs_dir: .
 nav:
   - Overview: 00_overview/RS-00_overview.md
   - Requirements:
