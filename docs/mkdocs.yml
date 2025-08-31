@@ -1,4 +1,5 @@
 site_name: Kumiki Docs
+site_url: https://dorebom.github.io/Kumiki_private/
 theme:
   name: material
 docs_dir: .
