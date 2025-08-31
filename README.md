@@ -1,6 +1,8 @@
 
 # Kumiki — ドロップイン DocOps アドオン
 
+[![Publish Docs (GitHub Pages)](https://github.com/Dorebom/Kumiki_private/actions/workflows/pages.yml/badge.svg)](https://github.com/Dorebom/Kumiki_private/actions/workflows/pages.yml)
+
 ## 概要
 **Kumiki** は、既存のソフトウェア開発リポジトリに *あと付け* できる **DocOps（Documentation Operations）** 基盤です。
 リポジトリ直下に **サブモジュールとして配置**することで、現在のコード／設計ドキュメントの配置を変えずに、
