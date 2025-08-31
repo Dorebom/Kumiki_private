@@ -1,0 +1,46 @@
+site_name: Kumiki Docs
+site_description: Kumiki ドキュメント（00_concept 版）
+site_url: https://example.com
+theme:
+  name: material
+  language: ja
+  features:
+  - navigation.instant
+  - navigation.tracking
+  - navigation.sections
+  - navigation.top
+  - content.code.copy
+docs_dir: docs
+use_directory_urls: true
+plugins:
+- search
+markdown_extensions:
+- admonition
+- toc
+- tables
+- attr_list
+- def_list
+- md_in_html
+- pymdownx.superfences: {}
+- pymdownx.details: {}
+- pymdownx.tabbed:
+    alternate_style: true
+nav:
+- 00_Concept:
+  - 'CR-01: テンプレート自動展開と DocLint（詳細仕様）': 00_concept/CR-01_template+doclint_detail_v0.1.md
+  - 'CR-02: FM→Graph→入口トレース（詳細仕様）': 00_concept/CR-02_fm-graph-trace_detail_v0.1.md
+  - 'CR-03: ハイブリッド検索（BM25+ANN）— 詳細仕様': 00_concept/CR-03_hybrid_search_detail_v0.1.md
+  - 'CR-04: 往復トレース到達テスト（詳細仕様）': 00_concept/CR-04_roundtrip_reach_detail_v0.1.md
+  - 'CR-05: 監査台帳（WORM風）— 詳細仕様': 00_concept/CR-05_audit_ledger_worm_detail_v0.1.md
+  - 'CR-06: 変更差分→影響ハイライト（詳細仕様）': 00_concept/CR-06_diff_impact_highlight_detail_v0.1.md
+  - 'CR-07: ID整合と重複検出/修復案（詳細仕様）': 00_concept/CR-07_id_consistency_dedup_repair_detail_v0.1.md
+  - 'CR-08: 多言語対訳整合（ja↔en）— 詳細仕様': 00_concept/CR-08_multilingual_consistency_detail_v0.1.md
+  - 'CR-09: セキュリティ/機密情報ブロック（詳細仕様）': 00_concept/CR-09_security_privacy_block_detail_v0.1.md
+  - 'CR-10: CIゲート & 公開フロー — 詳細仕様': 00_concept/CR-10_ci_gate_publish_detail_v0.1.md
+  - 'CR-11: 可観測性（メトリクス/ログ/アーティファクト）— 詳細仕様': 00_concept/CR-11_observability_detail_v0.1.md
+  - 'CR-12: 生成AI差分パッチ提案（unified diff）— 詳細仕様': 00_concept/CR-12_ai_patch_unified_diff_detail_v0.1.md
+  - 'CR-13: Embedding/ANNコネクタの差替え — 詳細仕様': 00_concept/CR-13_embedding_ann_connector_swap_detail_v0.1.md
+  - 'CR-14: スケール試験（300→1k）— 詳細仕様': 00_concept/CR-14_scale_test_detail_v0.1.md
+  - 'CR-15: 承認フローと自動マージ禁止条件 — 詳細仕様': 00_concept/CR-15_approval_flow_detail_v0.1.md
+  - Kumiki 概念要件（再提案・従来CRスタイル準拠） v0.2: 00_concept/CR-Kumiki_concept_requirements_preferred_style_v0.2.md
+  - Kumiki 概念要件 提案 v0.1: 00_concept/CR-Kumiki_concept_requirements_v0.1.md
