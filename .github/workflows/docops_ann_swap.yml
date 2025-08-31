@@ -28,12 +28,12 @@ jobs:
           BACKEND: ${{ matrix.backend }}
         run: |
           python - <<'PY'
-import yaml, os, json
-path = "tools/docops_cli/config/ann_connectors.yml"
-cfg = yaml.safe_load(open(path, "r", encoding="utf-8"))
-cfg["ann"]["backend"] = os.environ.get("BACKEND","numpy")
-open(path, "w", encoding="utf-8").write(yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False))
-PY
+          import yaml, os, json
+          path = "tools/docops_cli/config/ann_connectors.yml"
+          cfg = yaml.safe_load(open(path, "r", encoding="utf-8"))
+          cfg["ann"]["backend"] = os.environ.get("BACKEND","numpy")
+          open(path, "w", encoding="utf-8").write(yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False))
+          PY
           python tools/docops_cli/ann_benchmark.py --rules tools/docops_cli/config/ann_connectors.yml --out artifacts/ann_eval
       - uses: actions/upload-artifact@v4
         with:
