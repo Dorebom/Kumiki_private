@@ -3,6 +3,11 @@ site_url: https://dorebom.github.io/Kumiki_private/
 theme:
   name: material
 docs_dir: .
+plugins:
+  - search:
+      lang:
+        - ja
+        - en
 nav:
   - Home: index.md
   - Overview: 00_overview/RS-00_overview.md
