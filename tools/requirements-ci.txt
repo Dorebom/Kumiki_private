@@ -9,5 +9,5 @@ scikit-learn==1.4.2
 faiss-cpu==1.8.0
 python-slugify==8.0.4
 cryptography==42.0.5
-merklelib==1.0.3
+merklelib==1.0
 python-ulid==2.7.0

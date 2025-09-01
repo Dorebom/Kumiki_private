@@ -53,7 +53,9 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
       - name: Install deps
-        run: pip install -r tools/requirements-ci.txt
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -r tools/requirements-ci.txt
       - name: Run DocLint
         run: |
           python tools/docops_cli/lint.py check             --rules tools/docops_cli/config/doclint_rules.yml             --out artifacts/doclint --format json,md
@@ -70,7 +72,9 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
       - name: Install deps
-        run: pip install -r tools/requirements-ci.txt
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -r tools/requirements-ci.txt
       - name: Build Graph
         run: |
           python tools/docops_cli/trace.py build             --rules tools/docops_cli/config/trace_rules.yml             --out artifacts/trace --format json
@@ -87,7 +91,9 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
       - name: Install deps
-        run: pip install -r tools/requirements-ci.txt
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -r tools/requirements-ci.txt
       - name: Build Search Index
         run: |
           python tools/docops_cli/search.py index             --rules tools/docops_cli/config/search_rules.yml             --out artifacts/search
@@ -104,7 +110,9 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
       - name: Install deps
-        run: pip install -r tools/requirements-ci.txt
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -r tools/requirements-ci.txt
       - name: Scan secrets/PII
         run: |
           python tools/docops_cli/secscan.py scan             --rules tools/docops_cli/config/secscan_rules.yml             --allow tools/docops_cli/config/secscan_allowlist.yml             --out artifacts/secscan --format json,md || true
