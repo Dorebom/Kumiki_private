@@ -39,11 +39,11 @@ jobs:
       - name: Build site
         run: |
           # config は docs/mkdocs.yml、出力はワークスペース直下の site に
-          mkdocs build -f docs/mkdocs.yml --site-dir "$GITHUB_WORKSPACE/site"
+          mkdocs build -f mkdocs.yml --site-dir "$GITHUB_WORKSPACE/site"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: site .
 
   deploy:
     needs: build

@@ -1,0 +1,174 @@
+name: kumiki_ci_publish_plus
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'tools/**'
+      - '.github/workflows/kumiki_ci_publish_plus.yml'
+  push:
+    branches: ['main']
+    paths:
+      - 'docs/**'
+      - 'tools/**'
+      - '.github/workflows/kumiki_ci_publish_plus.yml'
+concurrency:
+  group: kumiki-ci-plus-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  TZ: UTC
+  LANG: C.UTF-8
+  PYTHONHASHSEED: "0"
+  SEED: "42"
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Install deps
+        run: pip install pyyaml
+      - name: Generate index & mkdocs (fail on PR if uncommitted)
+        run: |
+          python tools/ci/ci_integration.py --update-mkdocs --out artifacts/integration
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docops-integration
+          path: artifacts/integration
+
+  doclint:
+    runs-on: ubuntu-latest
+    needs: [prepare]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Install deps
+        run: pip install -r tools/requirements-ci.txt
+      - name: Run DocLint
+        run: |
+          python tools/docops_cli/lint.py check             --rules tools/docops_cli/config/doclint_rules.yml             --out artifacts/doclint --format json,md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docops-doclint
+          path: artifacts/doclint
+
+  trace:
+    runs-on: ubuntu-latest
+    needs: [prepare]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Install deps
+        run: pip install -r tools/requirements-ci.txt
+      - name: Build Graph
+        run: |
+          python tools/docops_cli/trace.py build             --rules tools/docops_cli/config/trace_rules.yml             --out artifacts/trace --format json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docops-trace
+          path: artifacts/trace
+
+  indexing:
+    runs-on: ubuntu-latest
+    needs: [prepare]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Install deps
+        run: pip install -r tools/requirements-ci.txt
+      - name: Build Search Index
+        run: |
+          python tools/docops_cli/search.py index             --rules tools/docops_cli/config/search_rules.yml             --out artifacts/search
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docops-search
+          path: artifacts/search
+
+  secscan:
+    runs-on: ubuntu-latest
+    needs: [prepare]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Install deps
+        run: pip install -r tools/requirements-ci.txt
+      - name: Scan secrets/PII
+        run: |
+          python tools/docops_cli/secscan.py scan             --rules tools/docops_cli/config/secscan_rules.yml             --allow tools/docops_cli/config/secscan_allowlist.yml             --out artifacts/secscan --format json,md || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docops-secscan
+          path: artifacts/secscan
+
+  gate:
+    runs-on: ubuntu-latest
+    needs: [doclint, trace, indexing, secscan]
+    outputs:
+      ok: ${{ steps.setout.outputs.ok }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: .
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Aggregate gate
+        run: |
+          python tools/ci/aggregate_gate.py tools/docops_cli/config/publish_rules.yml
+      - id: setout
+        run: |
+          python - <<'PY'
+import json, os
+j=json.load(open('artifacts/gate/gate_summary.json','r',encoding='utf-8'))
+print('Gate OK:', j.get('ok'))
+with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+    f.write(f"ok={str(bool(j.get('ok'))).lower()}
+")
+PY
+      - name: Upload gate summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: docops-gate
+          path: artifacts/gate
+
+  publish:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.gate.outputs.ok == 'true'
+    runs-on: ubuntu-latest
+    needs: [gate]
+    permissions:
+      pages: write
+      id-token: write
+      contents: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: .
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Build public index
+        env:
+          KUMIKI_INDEX_TITLE: "Kumiki — CI Gate Summary"
+        run: |
+          python tools/ci/make_index.py
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - name: Deploy to Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
