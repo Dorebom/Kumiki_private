@@ -35,7 +35,11 @@ jobs:
         run: pip install pyyaml
       - name: Generate index & mkdocs (fail on PR if uncommitted)
         run: |
-          python tools/ci/ci_integration.py --update-mkdocs --out artifacts/integration
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            python tools/ci/ci_integration.py --update-mkdocs --auto-commit --out artifacts/integration
+          else
+            python tools/ci/ci_integration.py --update-mkdocs --out artifacts/integration
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: docops-integration
