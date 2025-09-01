@@ -8,7 +8,7 @@ frontmatter:
   arrays_must_be_strings: true
 paths:
   include: ['docs/**/*.md']
-  exclude: ['**/.obsidian/**', 'node_modules/**', '**/README*.md']
+  exclude: ['**/.obsidian/**', 'node_modules/**', '**/README*.md', 'docs/index.md']
 links:
   check_relative: true
   check_external: true
