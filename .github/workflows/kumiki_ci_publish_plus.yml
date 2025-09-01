@@ -58,7 +58,7 @@ jobs:
           pip install -r tools/requirements-ci.txt
       - name: Run DocLint
         run: |
-          python tools/docops_cli/lint.py check             --rules tools/docops_cli/config/doclint_rules.yml             --out artifacts/doclint --format json,md
+          python tools/ci/lint.py check             --rules tools/docops_cli/config/doclint_rules.yml             --out artifacts/doclint --format json,md
       - uses: actions/upload-artifact@v4
         with:
           name: docops-doclint
@@ -77,7 +77,7 @@ jobs:
           pip install -r tools/requirements-ci.txt
       - name: Build Graph
         run: |
-          python tools/docops_cli/trace.py build             --rules tools/docops_cli/config/trace_rules.yml             --out artifacts/trace --format json
+          python tools/ci/trace.py build --rules tools/docops_cli/config/trace_rules.yml --out artifacts/trace --format json
       - uses: actions/upload-artifact@v4
         with:
           name: docops-trace
