@@ -15,7 +15,9 @@ def changed_files():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--update-mkdocs", action="store_true", help="mkdocs.yml も更新する")
+    # ap.add_argument("--auto-commit", action="store_true", help="push イベント時に自動コミットを試行")
     ap.add_argument("--auto-commit", action="store_true", help="push イベント時に自動コミットを試行")
+    ap.add_argument("--no-fail-on-diff", action="store_true", help="PRでも未コミット差分でFailしない（警告のみ）")
     ap.add_argument("--out", default="artifacts/integration")
     args = ap.parse_args()
 
@@ -35,7 +37,9 @@ def main():
     tried_commit = False
     commit_ok = False
     commit_msg = ""
-    if event_name == "push" and args.auto-commit and files:
+    auto_commit = getattr(args, "auto_commit", False)
+    if event_name == "push" and auto_commit and files:
+    # if event_name == "push" and args.auto-commit and files:
         tried_commit = True
         sh('git config user.email "github-actions[bot]@users.noreply.github.com"')
         sh('git config user.name "github-actions[bot]"')
