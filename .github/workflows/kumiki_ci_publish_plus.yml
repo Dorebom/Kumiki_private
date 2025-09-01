@@ -127,13 +127,13 @@ jobs:
       - id: setout
         run: |
           python - <<'PY'
-import json, os
-j=json.load(open('artifacts/gate/gate_summary.json','r',encoding='utf-8'))
-print('Gate OK:', j.get('ok'))
-with open(os.environ['GITHUB_OUTPUT'],'a') as f:
-    f.write(f"ok={str(bool(j.get('ok'))).lower()}
-")
-PY
+          import json, os
+          j=json.load(open('artifacts/gate/gate_summary.json','r',encoding='utf-8'))
+          print('Gate OK:', j.get('ok'))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write(f"ok={str(bool(j.get('ok'))).lower()}
+          ")
+          PY
       - name: Upload gate summary
         uses: actions/upload-artifact@v4
         with:
