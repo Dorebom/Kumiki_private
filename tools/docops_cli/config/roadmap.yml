@@ -1,0 +1,65 @@
+sprints:
+  S1:
+    range: 09-08 → 09-21
+    cr:
+    - CR-KMK-01
+    - CR-KMK-10
+    - CR-KMK-11
+  S2:
+    range: 09-22 → 10-05
+    cr:
+    - CR-KMK-02
+    - CR-KMK-07
+  S3:
+    range: 10-06 → 10-19
+    cr:
+    - CR-KMK-09
+    - CR-KMK-05
+  S4:
+    range: 10-20 → 11-02
+    cr:
+    - CR-KMK-10
+    - CR-KMK-11
+  S5:
+    range: 11-03 → 11-16
+    cr:
+    - CR-KMK-03
+    - CR-KMK-11
+  S6:
+    range: 11-17 → 11-30
+    cr:
+    - CR-KMK-13
+    - CR-KMK-07
+    - CR-KMK-03
+  S7:
+    range: 12-01 → 12-14
+    cr:
+    - CR-KMK-04
+    - CR-KMK-08
+  S8:
+    range: 12-15 → 12-28
+    cr:
+    - CR-KMK-14
+    - CR-KMK-12
+    - CR-KMK-11
+    - CR-KMK-10
+bg_hlf:
+  BG-KMK-01:
+  - HLF-01
+  - HLF-05
+  BG-KMK-02:
+  - HLF-05
+  - HLF-06
+  BG-KMK-03:
+  - HLF-01
+  - HLF-06
+  BG-KMK-04:
+  - HLF-03
+  - HLF-08
+  BG-KMK-05:
+  - HLF-04
+  - HLF-06
+  BG-KMK-06:
+  - HLF-08
+  - HLF-03
+  - HLF-05
