@@ -7,6 +7,8 @@ excludes:
   # 必要に応じて
   # - "docs/**/README.md"
   # - "docs/**/index.md"
+  - "docs/**/ROADMAP_BURNDOWN.md"
+  - "docs/**/ROADMAP_DASHBOARD.md"
 frontmatter:
   required_keys: [id, title, type, status, version, created, updated, owner, tags]
   optional_keys: [canonical_parent, refines, satisfies, depends_on, integrates_with, constrains, conflicts_with, supersedes]
