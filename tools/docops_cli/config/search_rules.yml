@@ -1,7 +1,7 @@
 # tools/docops_cli/config/search_rules.yml
 paths:
   include: ['docs/**/*.md']
-  exclude: ['**/.obsidian/**', 'node_modules/**']
+  exclude: ['**/.obsidian/**', 'node_modules/**', 'docs/index.md', "docs/**/ROADMAP_BURNDOWN.md", "docs/**/ROADMAP_DASHBOARD.md"]
 normalization:
   nfkc: true
   fold_case: true
