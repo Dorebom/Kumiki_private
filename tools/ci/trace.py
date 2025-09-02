@@ -55,7 +55,13 @@ def build_graph(docs_root: str, rules_path: str):
         rules = yaml.safe_load(open(rules_path, "r", encoding="utf-8")) or {}
     except FileNotFoundError:
         rules = {}
-    rels = rules.get("relations", [
+    rels_node = rules.get("relations", None)
+    if isinstance(rels_node, dict) and "relations" in rels_node:
+        rels = rels_node.get("relations", [])
+    elif isinstance(rels_node, list):
+        rels = rels_node
+    else:
+        rels = [
         {"key":"depends_on","type":"depends_on"},
         {"key":"refines","type":"refines"},
         {"key":"satisfies","type":"satisfies"},
@@ -63,7 +69,7 @@ def build_graph(docs_root: str, rules_path: str):
         {"key":"constrains","type":"constrains"},
         {"key":"supersedes","type":"supersedes"},
         {"key":"canonical_parent","type":"parent","scalar": True},
-    ])
+    ]
 
     G = nx.DiGraph()
     for _id, p in id_to_path.items():
