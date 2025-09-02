@@ -167,10 +167,22 @@ jobs:
           cache: 'pip'
       - name: Install deps (gate)
         run: pip install -r tools/requirements-ci.txt
-      - name: Preflight – check yaml module
+      - name: Guard – stdlib name collisions
         run: |
-          python -c "import sys; import importlib; sys.exit(0 if importlib.util.find_spec('yaml') else 1)" \
-            || (echo 'PyYAML not found'; exit 1)
+          bad=$(git ls-files | grep -E '^(importlib|yaml|json|re|glob|types)(\.py|/)' || true)
+          if [ -n "$bad" ]; then
+            echo "Stdlib name collisions found:"; echo "$bad"; exit 1
+          fi
+      - name: Preflight – PyYAML importable
+        run: |
+          python - <<'PY'
+          import sys
+          try:
+              import yaml
+              print("PyYAML OK:", getattr(yaml, "__version__", "unknown"))
+          except Exception as e:
+              print("PyYAML missing:", e); sys.exit(1)
+          PY
       - name: Aggregate gate
         run: |
           python tools/ci/aggregate_gate.py tools/docops_cli/config/publish_rules.yml
