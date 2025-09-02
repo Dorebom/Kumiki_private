@@ -42,5 +42,8 @@ nav:
   - 'CR-13: Embedding/ANNコネクタの差替え — 詳細仕様': 00_concept/CR-13_embedding_ann_connector_swap_detail_v0.1.md
   - 'CR-14: スケール試験（300→1k）— 詳細仕様': 00_concept/CR-14_scale_test_detail_v0.1.md
   - 'CR-15: 承認フローと自動マージ禁止条件 — 詳細仕様': 00_concept/CR-15_approval_flow_detail_v0.1.md
-  - Kumiki 概念要件（再提案・従来CRスタイル準拠） v0.2: 00_concept/CR-Kumiki_concept_requirements_preferred_style_v0.2.md
-  - Kumiki 概念要件 提案 v0.1: 00_concept/CR-Kumiki_concept_requirements_v0.1.md
+  - Kumiki 概念要件（Concept Requirements）: 00_concept/CR-KMK-00_concept_requirements.md
+  - Kumiki ロードマップ（2025H2, 2週間スプリント）: 00_concept/ROADMAP.md
+  - ROADMAP_BURNDOWN: 00_concept/ROADMAP_BURNDOWN.md
+  - ROADMAP_DASHBOARD: 00_concept/ROADMAP_DASHBOARD.md
+  - CRスタイルガイド（G/I/O/ACの推奨粒度）: 00_concept/STD-KMK-CR-STYLE-01.md

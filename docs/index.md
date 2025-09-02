@@ -5,7 +5,7 @@ type: overview
 status: stable
 version: 0.1.0
 created: '2025-09-01'
-updated: '2025-09-01'
+updated: '2025-09-02'
 tags:
 - index
 - auto-generated
@@ -30,8 +30,11 @@ tags:
 - [CR-13: Embedding/ANNコネクタの差替え — 詳細仕様](00_concept/CR-13_embedding_ann_connector_swap_detail_v0.1.md)
 - [CR-14: スケール試験（300→1k）— 詳細仕様](00_concept/CR-14_scale_test_detail_v0.1.md)
 - [CR-15: 承認フローと自動マージ禁止条件 — 詳細仕様](00_concept/CR-15_approval_flow_detail_v0.1.md)
-- [Kumiki 概念要件（再提案・従来CRスタイル準拠） v0.2](00_concept/CR-Kumiki_concept_requirements_preferred_style_v0.2.md)
-- [Kumiki 概念要件 提案 v0.1](00_concept/CR-Kumiki_concept_requirements_v0.1.md)
+- [Kumiki 概念要件（Concept Requirements）](00_concept/CR-KMK-00_concept_requirements.md)
+- [Kumiki ロードマップ（2025H2, 2週間スプリント）](00_concept/ROADMAP.md)
+- [ROADMAP_BURNDOWN](00_concept/ROADMAP_BURNDOWN.md)
+- [ROADMAP_DASHBOARD](00_concept/ROADMAP_DASHBOARD.md)
+- [CRスタイルガイド（G/I/O/ACの推奨粒度）](00_concept/STD-KMK-CR-STYLE-01.md)
 
 ## 一覧（メタ情報）
 | CR | タイトル | ステータス | 版 | 更新日 | タグ |
@@ -51,5 +54,8 @@ tags:
 | CR-13 | [CR-13: Embedding/ANNコネクタの差替え — 詳細仕様](00_concept/CR-13_embedding_ann_connector_swap_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr13, embedding, ann, faiss, scann, annoy, vendor-neutral |
 | CR-14 | [CR-14: スケール試験（300→1k）— 詳細仕様](00_concept/CR-14_scale_test_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr14, scale, performance, quality |
 | CR-15 | [CR-15: 承認フローと自動マージ禁止条件 — 詳細仕様](00_concept/CR-15_approval_flow_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr15, approval, governance, automerge, compliance |
-| CR-KMK-00 | [Kumiki 概念要件（再提案・従来CRスタイル準拠） v0.2](00_concept/CR-Kumiki_concept_requirements_preferred_style_v0.2.md) | draft | 0.2.0 | 2025-08-31 | kumiki, docops, concept, preferred_style |
-| CR-KMK-00 | [Kumiki 概念要件 提案 v0.1](00_concept/CR-Kumiki_concept_requirements_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept |
+| CR-KMK-00 | [Kumiki 概念要件（Concept Requirements）](00_concept/CR-KMK-00_concept_requirements.md) | review | 0.3.0 | 2025-09-02 | kumiki, concept, docops |
+| PLAN-KMK-ROADMAP-2025H2 | [Kumiki ロードマップ（2025H2, 2週間スプリント）](00_concept/ROADMAP.md) | draft | 0.1.0 | 2025-09-02 | roadmap, plan, sprint |
+|  | [ROADMAP_BURNDOWN](00_concept/ROADMAP_BURNDOWN.md) |  |  |  |  |
+|  | [ROADMAP_DASHBOARD](00_concept/ROADMAP_DASHBOARD.md) |  |  |  |  |
+| STD-KMK-CR-STYLE-01 | [CRスタイルガイド（G/I/O/ACの推奨粒度）](00_concept/STD-KMK-CR-STYLE-01.md) | draft | 0.1.0 | 2025-09-02 | styleguide, cr-format |
