@@ -16,8 +16,37 @@ node_kinds:
     - prefix: 'DD'; kind: 'DD'
     - prefix: 'TEST'; kind: 'TEST'
 relations:
-  allowed: ['refines','satisfies','depends_on','integrates_with','constrains','conflicts_with','supersedes']
-  integrates_with_undirected: false
+#  allowed: ['refines','satisfies','depends_on','integrates_with','constrains','conflicts_with','supersedes']
+#  integrates_with_undirected: false
+  version: 1
+  relations:
+    - key: canonical_parent
+      type: parent
+      scalar: true
+
+    - key: depends_on
+      type: depends_on
+
+    - key: refines
+      type: refines
+
+    - key: satisfies
+      type: satisfies
+
+    - key: integrates_with
+      type: integrates_with
+
+    - key: constrains
+      type: constrains
+
+    - key: supersedes
+      type: supersedes
+
+    - key: contributes_to
+      type: contributes_to
+
+    - key: satisfies_hlf
+      type: satisfies_hlf
 suggest:
   threshold: 0.65
   strong_threshold: 0.8
