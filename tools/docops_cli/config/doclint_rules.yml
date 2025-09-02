@@ -1,4 +1,12 @@
 # tools/docops_cli/config/doclint_rules.yml
+includes:
+  - "docs/**/*.md"
+
+excludes:
+  - "docs/index.md"     # ← これでトップページを除外
+  # 必要に応じて
+  # - "docs/**/README.md"
+  # - "docs/**/index.md"
 frontmatter:
   required_keys: [id, title, type, status, version, created, updated, owner, tags]
   optional_keys: [canonical_parent, refines, satisfies, depends_on, integrates_with, constrains, conflicts_with, supersedes]
