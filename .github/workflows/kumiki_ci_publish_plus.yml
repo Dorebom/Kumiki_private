@@ -160,8 +160,17 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: .
-      - uses: actions/setup-python@v5
-        with: { python-version: '3.11' }
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install deps (gate)
+        run: pip install -r tools/requirements-ci.txt
+      - name: Preflight – check yaml module
+        run: |
+          python -c "import sys; import importlib; sys.exit(0 if importlib.util.find_spec('yaml') else 1)" \
+            || (echo 'PyYAML not found'; exit 1)
       - name: Aggregate gate
         run: |
           python tools/ci/aggregate_gate.py tools/docops_cli/config/publish_rules.yml
