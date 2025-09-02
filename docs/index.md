@@ -15,21 +15,6 @@ tags:
 # Kumiki — コンセプト要件集
 
 ## 章立て（固定順）
-- [CR-01: テンプレート自動展開と DocLint（詳細仕様）](00_concept/CR-01_template+doclint_detail_v0.1.md)
-- [CR-02: FM→Graph→入口トレース（詳細仕様）](00_concept/CR-02_fm-graph-trace_detail_v0.1.md)
-- [CR-03: ハイブリッド検索（BM25+ANN）— 詳細仕様](00_concept/CR-03_hybrid_search_detail_v0.1.md)
-- [CR-04: 往復トレース到達テスト（詳細仕様）](00_concept/CR-04_roundtrip_reach_detail_v0.1.md)
-- [CR-05: 監査台帳（WORM風）— 詳細仕様](00_concept/CR-05_audit_ledger_worm_detail_v0.1.md)
-- [CR-06: 変更差分→影響ハイライト（詳細仕様）](00_concept/CR-06_diff_impact_highlight_detail_v0.1.md)
-- [CR-07: ID整合と重複検出/修復案（詳細仕様）](00_concept/CR-07_id_consistency_dedup_repair_detail_v0.1.md)
-- [CR-08: 多言語対訳整合（ja↔en）— 詳細仕様](00_concept/CR-08_multilingual_consistency_detail_v0.1.md)
-- [CR-09: セキュリティ/機密情報ブロック（詳細仕様）](00_concept/CR-09_security_privacy_block_detail_v0.1.md)
-- [CR-10: CIゲート & 公開フロー — 詳細仕様](00_concept/CR-10_ci_gate_publish_detail_v0.1.md)
-- [CR-11: 可観測性（メトリクス/ログ/アーティファクト）— 詳細仕様](00_concept/CR-11_observability_detail_v0.1.md)
-- [CR-12: 生成AI差分パッチ提案（unified diff）— 詳細仕様](00_concept/CR-12_ai_patch_unified_diff_detail_v0.1.md)
-- [CR-13: Embedding/ANNコネクタの差替え — 詳細仕様](00_concept/CR-13_embedding_ann_connector_swap_detail_v0.1.md)
-- [CR-14: スケール試験（300→1k）— 詳細仕様](00_concept/CR-14_scale_test_detail_v0.1.md)
-- [CR-15: 承認フローと自動マージ禁止条件 — 詳細仕様](00_concept/CR-15_approval_flow_detail_v0.1.md)
 - [Kumiki 概念要件（Concept Requirements）](00_concept/CR-KMK-00_concept_requirements.md)
 - [Kumiki ロードマップ（2025H2, 2週間スプリント）](00_concept/ROADMAP.md)
 - [ROADMAP_BURNDOWN](00_concept/ROADMAP_BURNDOWN.md)
@@ -39,21 +24,6 @@ tags:
 ## 一覧（メタ情報）
 | CR | タイトル | ステータス | 版 | 更新日 | タグ |
 |---:|---|---|---|---|---|
-| CR-1 | [CR-01: テンプレート自動展開と DocLint（詳細仕様）](00_concept/CR-01_template+doclint_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr01, doclint, template |
-| CR-2 | [CR-02: FM→Graph→入口トレース（詳細仕様）](00_concept/CR-02_fm-graph-trace_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr02, graph, trace |
-| CR-3 | [CR-03: ハイブリッド検索（BM25+ANN）— 詳細仕様](00_concept/CR-03_hybrid_search_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr03, search, bm25, ann |
-| CR-4 | [CR-04: 往復トレース到達テスト（詳細仕様）](00_concept/CR-04_roundtrip_reach_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr04, reachability, roundtrip |
-| CR-5 | [CR-05: 監査台帳（WORM風）— 詳細仕様](00_concept/CR-05_audit_ledger_worm_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr05, audit, worm, ledger |
-| CR-6 | [CR-06: 変更差分→影響ハイライト（詳細仕様）](00_concept/CR-06_diff_impact_highlight_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr06, impact, diff, highlight |
-| CR-7 | [CR-07: ID整合と重複検出/修復案（詳細仕様）](00_concept/CR-07_id_consistency_dedup_repair_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr07, id, duplicate, repair |
-| CR-8 | [CR-08: 多言語対訳整合（ja↔en）— 詳細仕様](00_concept/CR-08_multilingual_consistency_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr08, i18n, bilingual, consistency |
-| CR-9 | [CR-09: セキュリティ/機密情報ブロック（詳細仕様）](00_concept/CR-09_security_privacy_block_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr09, security, pii, secret, dlp |
-| CR-10 | [CR-10: CIゲート & 公開フロー — 詳細仕様](00_concept/CR-10_ci_gate_publish_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr10, ci, publish, pages |
-| CR-11 | [CR-11: 可観測性（メトリクス/ログ/アーティファクト）— 詳細仕様](00_concept/CR-11_observability_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr11, observability, metrics, logs, artifacts, worm |
-| CR-12 | [CR-12: 生成AI差分パッチ提案（unified diff）— 詳細仕様](00_concept/CR-12_ai_patch_unified_diff_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr12, ai, patch, diff, review |
-| CR-13 | [CR-13: Embedding/ANNコネクタの差替え — 詳細仕様](00_concept/CR-13_embedding_ann_connector_swap_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr13, embedding, ann, faiss, scann, annoy, vendor-neutral |
-| CR-14 | [CR-14: スケール試験（300→1k）— 詳細仕様](00_concept/CR-14_scale_test_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr14, scale, performance, quality |
-| CR-15 | [CR-15: 承認フローと自動マージ禁止条件 — 詳細仕様](00_concept/CR-15_approval_flow_detail_v0.1.md) | draft | 0.1.0 | 2025-08-31 | kumiki, docops, concept, cr15, approval, governance, automerge, compliance |
 | CR-KMK-00 | [Kumiki 概念要件（Concept Requirements）](00_concept/CR-KMK-00_concept_requirements.md) | review | 0.3.0 | 2025-09-02 | kumiki, concept, docops |
 | PLAN-KMK-ROADMAP-2025H2 | [Kumiki ロードマップ（2025H2, 2週間スプリント）](00_concept/ROADMAP.md) | draft | 0.1.0 | 2025-09-02 | roadmap, plan, sprint |
 |  | [ROADMAP_BURNDOWN](00_concept/ROADMAP_BURNDOWN.md) |  |  |  |  |
