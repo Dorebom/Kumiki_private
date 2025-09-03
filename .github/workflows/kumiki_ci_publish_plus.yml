@@ -162,8 +162,7 @@ jobs:
           else
             echo "audit.py not found; skipping"; exit 0
           fi
-
-      - name: Append & Verify ledger (push: main)
+      - name: Append & Verify ledger (push main)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           if [ -f tools/docops_cli/audit.py ]; then
