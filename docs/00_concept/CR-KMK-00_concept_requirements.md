@@ -11,14 +11,14 @@ tags:
 - kumiki
 - concept
 - docops
-satisfies:
+canonical_parent: []
+defines_ids:
 - BG-KMK-01
 - BG-KMK-02
 - BG-KMK-03
 - BG-KMK-04
 - BG-KMK-05
 - BG-KMK-06
-hlf_roots:
 - HLF-01
 - HLF-02
 - HLF-03
@@ -27,6 +27,43 @@ hlf_roots:
 - HLF-06
 - HLF-07
 - HLF-08
+- CR-KMK-01
+- CR-KMK-02
+- CR-KMK-03
+- CR-KMK-04
+- CR-KMK-05
+- CR-KMK-06
+- CR-KMK-07
+- CR-KMK-08
+- CR-KMK-09
+- CR-KMK-10
+- CR-KMK-11
+- CR-KMK-12
+- CR-KMK-13
+- CR-KMK-14
+- CR-KMK-15
+id_aliases:
+- CR-01
+- CR-02
+- CR-03
+- CR-04
+- CR-05
+- CR-06
+- CR-07
+- CR-08
+- CR-09
+- CR-10
+- CR-11
+- CR-12
+- CR-13
+- CR-14
+- CR-15
+- BG-01
+- BG-02
+- BG-03
+- BG-04
+- BG-05
+- BG-06
 ---
 
 # Kumiki 概念要件（Concept Requirements）

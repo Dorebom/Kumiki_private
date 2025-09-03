@@ -115,12 +115,27 @@ def collect_md_files(docs_root: str, include_globs, exclude_globs):
 def build_graph(docs_root: str, rules_path: str):
     rules = load_rules(rules_path)
     id_field = rules["id_field"]
+    accept_prefixes = [p.upper() for p in (rules.get("accept_id_prefixes") or [])]
     md_files = collect_md_files(docs_root, rules["include_globs"], rules["exclude_globs"])
 
     # Collect nodes
     id_to_path = {}
     path_to_id = {}
     fm_cache = {}
+    def _accept(idstr: str) -> bool:
+        if not accept_prefixes:
+            return True
+        u = (idstr or "").upper()
+        return any(u.startswith(pref) for pref in accept_prefixes)
+
+    def _extract_inline_ids(text: str):
+        ids = set()
+        # 1) 行頭/見出しの "ID: XXX" 形式
+        for m in re.finditer(r'(?m)^(?:#{1,6}\s+)?ID:\s*([A-Za-z0-9\-\.]+)\b', text):
+            ids.add(m.group(1).strip())
+        # 2) 見出し末尾の […] などにも拡張したければここで追加
+        return [i for i in ids if _accept(i)]
+
     for p in md_files:
         fm = read_fm(p)
         fm_cache[str(p)] = fm
@@ -130,12 +145,25 @@ def build_graph(docs_root: str, rules_path: str):
         if isinstance(_id, str) and _id.strip():
             id_to_path[_id] = str(p)
             path_to_id[str(p)] = _id
+        # 明示宣言された defines_ids をノード化
+        for extra in ensure_list(fm.get("defines_ids")):
+            if isinstance(extra, str) and extra.strip() and _accept(extra):
+                id_to_path[extra] = f"{p}#{extra.lower()}"
+        # 本文の ID: XXX 形式を拾ってノード化
+        try:
+            body = p.read_text(encoding="utf-8", errors="ignore")
+        except Exception:
+            body = ""
+        for inline in _extract_inline_ids(body):
+            if inline not in id_to_path:
+                id_to_path[inline] = f"{p}#{inline.lower()}"
 
     rels = rules["relations"]
     G = nx.DiGraph()
-    for _id, p in id_to_path.items():
-        G.add_node(_id, path=p)
-
+    #for _id, p in id_to_path.items():
+    #    G.add_node(_id, path=p)
+    for _id, loc in id_to_path.items():
+        G.add_node(_id, path=loc)
     unknown_refs = []
     # Build edges
     for p_str, fm in fm_cache.items():

@@ -57,6 +57,42 @@ relations:
   - key: satisfies_hlf
     type: satisfies_hlf
 
+# 明示定義（FrontMatter）の他、本文で拾うときに「この接頭辞だけ」許可
+accept_id_prefixes:
+  - BG-KMK-
+  - HLF-
+  - KPI-
+  - FR-
+  - NFR-
+  - CN-
+  - RS-
+  - DD-
+  - TC-
+
+# 旧→新の別名
+aliases:
+  - { alias: "BG-01",           target: "BG-KMK-01" }
+  - { alias: "BG-02",           target: "BG-KMK-02" }
+  - { alias: "BG-03",           target: "BG-KMK-03" }
+  - { alias: "BG-04",           target: "BG-KMK-04" }
+  - { alias: "BG-05",           target: "BG-KMK-05" }
+  - { alias: "BG-06",           target: "BG-KMK-06" }
+  - { alias: "CR-01",           target: "CR-KMK-01" }
+  - { alias: "CR-02",           target: "CR-KMK-02" }
+  - { alias: "CR-03",           target: "CR-KMK-03" }
+  - { alias: "CR-04",           target: "CR-KMK-04" }
+  - { alias: "CR-05",           target: "CR-KMK-05" }
+  - { alias: "CR-06",           target: "CR-KMK-06" }
+  - { alias: "CR-07",           target: "CR-KMK-07" }
+  - { alias: "CR-08",           target: "CR-KMK-08" }
+  - { alias: "CR-09",           target: "CR-KMK-09" }
+  - { alias: "CR-10",           target: "CR-KMK-10" }
+  - { alias: "CR-11",           target: "CR-KMK-11" }
+  - { alias: "CR-12",           target: "CR-KMK-12" }
+  - { alias: "CR-13",           target: "CR-KMK-13" }
+  - { alias: "CR-14",           target: "CR-KMK-14" }
+  - { alias: "CR-15",           target: "CR-KMK-15" }
+
 suggest:
   threshold: 0.65
   strong_threshold: 0.8
