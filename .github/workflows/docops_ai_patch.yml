@@ -1,31 +1,59 @@
 name: docops_ai_patch
-on:
-  pull_request:
-    paths:
-      - 'docs/**'
-      - 'tools/**'
-      - '.github/workflows/docops_ai_patch.yml'
+
+'on':
+  workflow_dispatch: {}
+
+concurrency:
+  group: ai-patch-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write   # if creating branches/PRs
+  pull-requests: write
+
 jobs:
   suggest:
+    name: AI patch proposal (manual)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Generate AI patch proposals
-        env:
-          AI_PROVIDER: "openai"
-          AI_MODEL: "gpt-4o-mini"
-          AI_TEMPERATURE: "0.0"
-          AI_TOP_P: "1.0"
-          AI_SEED: "42"
+
+      - name: Install deps
         run: |
-          python tools/docops_cli/ai_patch.py suggest             --rules tools/docops_cli/config/ai_patch_rules.yml             --prompts tools/docops_cli/prompts             --out artifacts/ai_patch --format json,patch
+          python -m pip install --upgrade pip
+          # add project-specific deps if needed
+          pip install pyyaml
+
+      - name: Generate patch (dry-run)
+        run: |
+          if [ -f tools/docops_cli/ai_patch.py ]; then
+            python tools/docops_cli/ai_patch.py --out artifacts/ai_patch || true
+          else
+            echo "ai_patch.py not found; skipping"; exit 0
+          fi
+
+      - name: Create PR (optional)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -d artifacts/ai_patch ] && [ -n "$(ls -A artifacts/ai_patch 2>/dev/null)" ]; then
+            echo "Preparing PR..."
+            # Place holder: implement branch/commit/PR creation if desired.
+            # gh pr create --title "AI patch proposal" --body "Automated suggestion" || true
+          else
+            echo "No patch produced; skipping PR creation."
+          fi
+
       - name: Upload artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: docops-ai-patch
+          name: ai-patch-artifacts
           path: artifacts/ai_patch

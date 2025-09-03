@@ -1,0 +1,61 @@
+name: docops_search_eval
+
+'on':
+  schedule:
+    - cron: '0 18 * * *'  # every day 18:00 UTC = 03:00 JST
+  workflow_dispatch: {}
+
+concurrency:
+  group: kumiki-eval-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  search_eval:
+    name: Search Eval (nightly)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          for f in tools/ci/requirements.txt tools/docops_cli/requirements.txt requirements.txt; do
+            [ -f "$f" ] && pip install -r "$f";
+          done
+          pip install pyyaml networkx markdown-it-py
+
+      - name: Build Index (optional)
+        run: |
+          if [ -f tools/docops_cli/build_index.py ]; then
+            python tools/docops_cli/build_index.py --out artifacts/search_index
+          elif [ -f tools/ci/build_index.py ]; then
+            python tools/ci/build_index.py --out artifacts/search_index
+          else
+            echo "no index builder found; skipping"
+          fi
+
+      - name: Run Search Eval
+        run: |
+          if [ -f tools/docops_cli/search_eval.py ]; then
+            python tools/docops_cli/search_eval.py --out artifacts/search_eval
+          elif [ -f tools/ci/search_eval.py ]; then
+            python tools/ci/search_eval.py --out artifacts/search_eval
+          else
+            echo "no search eval found; skipping"; exit 0
+          fi
+
+      - name: Upload eval artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docops-search-eval
+          path: artifacts/search_eval
