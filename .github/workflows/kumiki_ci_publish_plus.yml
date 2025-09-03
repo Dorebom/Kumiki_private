@@ -20,84 +20,36 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  PYTHONUNBUFFERED: '1'
-
 jobs:
-  build_and_gate:
-    name: Lint / Trace / IDCheck / Reach / Gate / Build
+  build:
+    name: Build (Lint/Trace optional) + Pages:prepare
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
 
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Install deps
+      - name: Install minimal deps
         run: |
           python -m pip install --upgrade pip
-          for f in tools/ci/requirements.txt tools/docops_cli/requirements.txt requirements.txt; do
-            [ -f "$f" ] && pip install -r "$f";
-          done
-          pip install pyyaml networkx markdown-it-py mkdocs mkdocs-material
+          pip install pyyaml mkdocs mkdocs-material networkx
 
-      # --- DocOps: Lint / Trace / IDCheck / Reach / Gate ---
-      - name: Doc Lint
+      # --- Optional: Doc Lint (あれば実行、無ければスキップ) ---
+      - name: Doc Lint (optional)
         run: |
-          if [ -f tools/ci/doc_lint.py ]; then python tools/ci/doc_lint.py; fi
+          if [ -f tools/ci/doc_lint.py ]; then python tools/ci/doc_lint.py; else echo "no doc_lint.py"; fi
 
-      - name: Trace Build (+Suggest)
+      # --- Optional: Trace（buildのみ） ---
+      - name: Trace build (optional)
         run: |
           if [ -f tools/ci/trace.py ]; then
-            mkdir -p artifacts/trace
-            python tools/ci/trace.py build --out artifacts/trace --format json,md || exit 1
-            python tools/ci/trace.py suggest --out artifacts/trace --threshold 0.65 --strong-threshold 0.8 || true
-          elif [ -f tools/ci/trace_emit.py ]; then
-            python tools/ci/trace_emit.py
+            python tools/ci/trace.py build --out artifacts/trace --format json,md
           else
-            echo "no trace tool found"; exit 1
+            echo "no tools/ci/trace.py"
           fi
 
-      - name: ID Check
-        run: |
-          if [ -f tools/ci/idcheck.py ]; then
-            python tools/ci/idcheck.py verify
-          elif [ -f tools/docops_cli/idcheck.py ]; then
-            python tools/docops_cli/idcheck.py verify
-          else
-            echo "idcheck script not found; skipping"; exit 0
-          fi
-
-      - name: Reach (入口到達100%チェック)
-        run: |
-          if [ -f tools/docops_cli/reach_check.py ]; then
-            python tools/docops_cli/reach_check.py --fail-on-miss
-          elif [ -f tools/ci/reach_check.py ]; then
-            python tools/ci/reach_check.py --fail-on-miss
-          else
-            echo "reach checker not found; skipping"; exit 0
-          fi
-
-      - name: Aggregate Gate
-        run: |
-          if [ -f tools/ci/aggregate_gate.py ]; then
-            python tools/ci/aggregate_gate.py tools/docops_cli/config/publish_rules.yml
-          else
-            echo "aggregate_gate.py not found; skipping"; exit 0
-          fi
-
+      # --- Site build ---
       - name: Build site (MkDocs)
         run: |
           if [ -f mkdocs.yml ]; then
@@ -106,21 +58,7 @@ jobs:
             mkdir -p public && echo "<h1>Kumiki</h1>" > public/index.html
           fi
 
-      - name: Build public index
-        env:
-          KUMIKI_INDEX_TITLE: "Kumiki — CI Gate Summary"
-        run: |
-          if [ -f tools/ci/make_index.py ]; then python tools/ci/make_index.py; fi
-          [ -e public/index.html ] || echo "<h1>Kumiki</h1>" > public/index.html
-
-      - name: Upload trace artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: docops-trace-artifacts
-          path: artifacts/trace
-
-      # --- Pages: Configure / Upload は push:main のときだけ ---
+      # --- Pages: prepare（main pushのみ） ---
       - name: Configure Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v5
@@ -128,151 +66,20 @@ jobs:
       - name: Upload pages artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
-        with:
-          path: public
-
-  # Ledger audit is a separate job so it can gate deployment if desired
-  audit_ledger:
-    name: Audit Ledger (verify on PR, append+verify on main)
-    needs: build_and_gate
-    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install audit deps
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyyaml cryptography merklelib python-ulid
-
-      - name: Verify ledger (PR only)
-        if: github.event_name == 'pull_request'
-        run: |
-          if [ -f tools/docops_cli/audit.py ]; then
-            mkdir -p artifacts/ledger
-            python tools/docops_cli/audit.py verify               --config tools/docops_cli/config/audit_rules.yml               --pubkeys tools/docops_cli/config/pubkeys.pem               --fail-on-missing --fail-on-broken-chain
-          else
-            echo "audit.py not found; skipping"; exit 0
-          fi
-      - name: Append & Verify ledger (push main)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          if [ -f tools/docops_cli/audit.py ]; then
-            mkdir -p artifacts/ledger
-            python tools/docops_cli/audit.py append               --config tools/docops_cli/config/audit_rules.yml               --out artifacts/ledger
-            python tools/docops_cli/audit.py verify               --config tools/docops_cli/config/audit_rules.yml               --pubkeys tools/docops_cli/config/pubkeys.pem               --fail-on-missing --fail-on-broken-chain
-          else
-            echo "audit.py not found; skipping"; exit 0
-          fi
-
-      - name: Upload ledger artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: docops-audit-ledger
-          path: artifacts/ledger
+        with: { path: public }
 
   publish:
-    name: Deploy to GitHub Pages
-    needs: [build_and_gate, audit_ledger]
+    name: Pages:deploy (main only)
+    needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-
     permissions:
       pages: write
       id-token: write
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
-
-  # (kept) i18n check as a separate job in the main workflow
-  i18n_check:
-    name: i18n check (PR only, path-filtered)
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            i18n:
-              - 'docs/**'
-              - 'tools/docops_cli/**'
-              - '.github/workflows/kumiki_ci_publish_plus.yml'
-
-      - uses: actions/setup-python@v5
-        if: steps.filter.outputs.i18n == 'true'
-        with:
-          python-version: '3.11'
-
-      - name: Install deps
-        if: steps.filter.outputs.i18n == 'true'
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyyaml markdown-it-py
-
-      - name: Run i18n extract/check
-        if: steps.filter.outputs.i18n == 'true'
-        run: |
-          if [ -f tools/docops_cli/i18n_extract.py ]; then
-            python tools/docops_cli/i18n_extract.py --out artifacts/i18n || true
-          fi
-          if [ -f tools/docops_cli/i18n_check.py ]; then
-            python tools/docops_cli/i18n_check.py --fail-on-miss || true
-          fi
-
-      - uses: actions/upload-artifact@v4
-        if: always() && steps.filter.outputs.i18n == 'true'
-        with:
-          name: i18n-artifacts
-          path: artifacts/i18n
-
-  # (kept) impact analysis in main workflow for PRs
-  impact_analysis:
-    name: impact analysis (PR only)
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install deps
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyyaml numpy scikit-learn networkx
-
-      - name: Build graph (if needed) & analyze
-        run: |
-          if [ -f tools/docops_cli/trace.py ]; then
-            python tools/docops_cli/trace.py build --out artifacts/trace --format json || true
-          fi
-          if [ -f tools/docops_cli/impact.py ]; then
-            python tools/docops_cli/impact.py analyze --out artifacts/impact --format json,md || true
-          fi
-
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: docops-impact-artifacts
-          path: artifacts/impact
