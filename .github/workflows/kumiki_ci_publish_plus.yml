@@ -60,10 +60,10 @@ jobs:
 
       - name: Trace Build (+Suggest)
         run: |
-          if [ -f tools/docops_cli/trace.py ]; then
+          if [ -f tools/ci/trace.py ]; then
             mkdir -p artifacts/trace
-            python tools/docops_cli/trace.py build --out artifacts/trace --format json,md || exit 1
-            python tools/docops_cli/trace.py suggest --out artifacts/trace --threshold 0.65 --strong-threshold 0.8 || true
+            python tools/ci/trace.py build --out artifacts/trace --format json,md || exit 1
+            python tools/ci/trace.py suggest --out artifacts/trace --threshold 0.65 --strong-threshold 0.8 || true
           elif [ -f tools/ci/trace_emit.py ]; then
             python tools/ci/trace_emit.py
           else
