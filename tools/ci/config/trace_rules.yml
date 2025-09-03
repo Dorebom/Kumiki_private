@@ -1,0 +1,23 @@
+# tools/ci/config/trace_rules.yml
+relations:
+  - { key: depends_on,      type: depends_on }
+  - { key: refines,         type: refines }
+  - { key: satisfies,       type: satisfies }
+  - { key: integrates_with, type: integrates_with }
+  - { key: constrains,      type: constrains }
+  - { key: supersedes,      type: supersedes }
+  - { key: canonical_parent, type: parent, scalar: true }
+
+# ignore .obsidian and other auxiliary dirs
+exclude_globs:
+  - '**/.obsidian/**'
+  - '**/.git/**'
+  - '**/node_modules/**'
+
+# example alias mapping (optional)
+aliases:
+  - { alias: "BG-01", target: "BG-KMK-01" }
+  - { alias: "KPI-QUALITY-01", target: "KPI-QLT-01" }
+
+# override id field if needed
+# id_field: "id"
