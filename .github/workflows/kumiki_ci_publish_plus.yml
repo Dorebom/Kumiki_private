@@ -53,11 +53,27 @@ jobs:
       # --- Optional: Trace（buildのみ） ---
       - name: Trace build (optional)
         run: |
-          if [ -f tools/ci/trace.py ]; then
-            python tools/ci/trace.py build --out artifacts/trace --format json,md
-          else
-            echo "no tools/ci/trace.py"
+          python - <<'PY'
+          import yaml,sys,pathlib
+          p=pathlib.Path('tools/docops_cli/config/trace_rules.yml')
+          try:
+            yaml.safe_load(p.read_text(encoding='utf-8'))
+          except yaml.YAMLError as e:
+            print('YAML parse error:', e); sys.exit(1)
+          print('trace_rules.yml OK')
+          PY
+      - name: No tabs in trace_rules.yml
+        run: |
+          if grep -nP '\t' tools/docops_cli/config/trace_rules.yml; then
+            echo 'Tabs detected in trace_rules.yml' >&2; exit 1
           fi
+      - name: Build Graph
+        run: |
+          python tools/ci/trace.py build --rules tools/docops_cli/config/trace_rules.yml --out artifacts/trace --format json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docops-trace
+          path: artifacts/trace
 
       # --- Site build ---
       - name: Build site (MkDocs)
