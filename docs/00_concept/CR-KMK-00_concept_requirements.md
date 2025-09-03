@@ -213,6 +213,55 @@ hlf_roots:
 - 重複/欠番/断リンクの検出と**自動修復案**（CR-07）  
 （対応：**CR-02/04/07**, HLF-02, BG-01/03）
 
+**[追記] 上流ID（BG/HLF/KPI）の扱いと入口ノード化**
+
+- **定義**：`BG-KMK-xx`（ビジネスゴール）、`HLF-xx`（ハイレベル機能要求）、`KPI-***-xx` は「入口（upstream root）」IDクラスとして扱う。  
+- **存在形態**：  
+  (1) 別ドキュメントで詳細化（推奨）／(2) 本ドキュメント（`CR-KMK-00`）内のみの定義（許容）。  
+- **到達要件**：Graph 上で入口IDがノード登録され、下流（CR/FR/NFR/CN/DD/TEST）から  
+  - `BG/HLF` へは `satisfies` または `refines`、  
+  - `KPI` へは `constrains`  
+  のいずれかで**少なくとも1本**のエッジが張られて到達できること。未到達は Gate で **Fail**（CR-04）。
+
+**FrontMatter 規約（追加）** — *フラット1段／配列は文字列IDのみ*
+- `CR-KMK-00`（本ページ）に、入口IDを**文書内定義**として公開するためのメタキーを追加：
+  - `defines_ids: [BG-KMK-01, ..., HLF-01, ..., KPI-QLT-01, ...]`  
+    → 本ページ内で**正規に定義**する入口IDの列挙（Graph にアンカー付きノードを生成）
+  - `id_aliases: [BG-01, KPI-QUALITY-01, ...]`  
+    → 旧表記・短縮表記・外部由来の**別名**（解決テーブルとして使用）
+- 下流ドキュメント側（例：CR/FR/NFR/CN…）の推奨フィールド：
+  - `satisfies: [BG-KMK-xx, HLF-yy]`  … 上流ゴール/HLFへの満足を明示
+  - `constrains: [KPI-***-zz]`       … 達成を**制約/目標**として明示（KPIのトレース入口）
+  - `canonical_parent: CR-KMK-00`     … 概念要件への入口を一本化（多親防止）
+- **互換（deprecated）**：過去の独自キーは CLI 側で自動正規化（CR-07）。  
+  - `hlf_roots` → `satisfies`（HLF）へ統合  
+  - `contributes_to` → `satisfies`（BG）へ統合
+
+**入口トレース生成アルゴリズム（要約）**
+1. 各文書の FM から固定語彙の関係キーを収集（`refines/satisfies/depends_on/integrates_with/constrains/conflicts_with/supersedes`）。  
+2. `CR-KMK-00` の `defines_ids` を読み、本文内の入口ID（BG/HLF/KPI）を**ノード**として登録（章見出しに自動アンカー付与）。  
+3. `id_aliases` を**別名解決テーブル**に登録（重複・衝突は CR-07 の自動修復案へ）。  
+4. 全ドキュメントの関係キーを**型付きエッジ**に変換。  
+5. 入口IDへの**到達率**を算出：  
+   - `BG/HLF`：`satisfies|refines` 経由で到達  
+   - `KPI`：`constrains` 経由で到達  
+6. `unknown_refs`・閉路・多親違反を検出し、**自動修復案**（置換/追加/分割/再配線）を生成（CR-07）。
+
+**検証とゲート（最小基準）**
+- `unknown_refs = 0`、**入口到達 = 100%（重要ノード）**。  
+- `canonical_parent` は**常に1つ**（多親は Fail）。  
+- `KPI-*` が定義される場合、**少なくとも1つ**の下流ノードから `constrains` で到達していること（未到達は警告→Gate 条件化可）。
+
+**実装例（FM スニペット）**
+- `CR-KMK-00`（本ページ）:
+  ```yaml
+  defines_ids:
+    - BG-KMK-01; BG-KMK-02; BG-KMK-03; BG-KMK-04; BG-KMK-05; BG-KMK-06
+    - HLF-01; HLF-02; HLF-03; HLF-04; HLF-05; HLF-06; HLF-07; HLF-08
+    - KPI-QLT-01; KPI-OPS-01; KPI-SRC-01; KPI-SEC-01; KPI-OBS-01; KPI-SCL-01
+  id_aliases: [BG-01, KPI-QUALITY-01]  # 任意
+
+
 #### 3.1.3 検索（Lexical + Embedding、評価付き）
 - **自動インデクシング**：BM25 + Embedding（ANN）。日本語形態素（Kuromoji/Sudachi）＋ n-gram フォールバック
 - 評価と回帰比較（Hit@k、nDCG、Top@3 劣化監視）

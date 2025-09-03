@@ -183,7 +183,8 @@ def _prefix_token(s: str):
     m = re.match(r'^([A-Za-z\-]+)', s)
     return m.group(1) if m else s
 
-def suggest_unknowns(docs_root: str, rules_path: str, out_dir: str):
+def suggest_unknowns(docs_root: str, rules_path: str, out_dir: str,
+                     threshold: float = 0.65, strong_threshold: float = 0.80):
     rules, G, unknown_refs, summary = build_graph(docs_root, rules_path)
     id_to_path = {n: G.nodes[n].get("path","") for n in G.nodes}
 
@@ -219,17 +220,35 @@ def suggest_unknowns(docs_root: str, rules_path: str, out_dir: str):
                     if ref and ref.upper() in nid_u:
                         cands.append({"id": nid, "score": 0.3, "reason": "substring"})
         cands = sorted(cands, key=lambda x: x["score"], reverse=True)[:5]
-        suggestions.append({**u, "candidates": cands})
+        # 閾値でフィルタ（表示/要約のため）
+        filtered = [c for c in cands if c["score"] >= threshold]
+        top_score = cands[0]["score"] if cands else 0.0
+        is_strong = top_score >= strong_threshold
+        suggestions.append({**u,
+                            "candidates": cands,
+                            "filtered": filtered,
+                            "top_score": top_score,
+                            "strong": is_strong})
 
     outp = Path(out_dir)
     outp.mkdir(parents=True, exist_ok=True)
-    (outp / "suggest.json").write_text(json.dumps({"summary": summary, "suggestions": suggestions}, ensure_ascii=False, indent=2), encoding="utf-8")
-
+    (outp / "suggest.json").write_text(
+        json.dumps({"summary": summary,
+                    "threshold": threshold,
+                    "strong_threshold": strong_threshold,
+                    "suggestions": suggestions},
+                   ensure_ascii=False, indent=2),
+        encoding="utf-8")
     # human-readable
     lines = ["# Suggestions for unknown_refs", "", f"- unknown_refs: {summary['unknown_refs']}", ""]
     for s in suggestions:
-        lines.append(f"## {s['src']} -> {s['ref']} ({s['type']}) @ {s['path']}")
-        if s["candidates"]:
+        lines.append(f"## {s['src']} -> {s['ref']} ({s['type']}) @ {s['path']}  (top={s['top_score']}, strong={s['strong']})")
+        if s["filtered"]:
+            lines.append(f"- filtered (>= {threshold}):")
+            for c in s["filtered"]:
+                lines.append(f"  - {c['id']}  (score={c['score']}, reason={c['reason']})")
+        elif s["candidates"]:
+            lines.append(f"- candidates (< {threshold}):")
             for c in s["candidates"]:
                 lines.append(f"- candidate: {c['id']}  (score={c['score']}, reason={c['reason']})")
         else:
@@ -266,13 +285,19 @@ def main():
     ap.add_argument("--docs-root", default=DEFAULT_DOCS_ROOT)
     ap.add_argument("--out", default="artifacts/trace")
     ap.add_argument("--format", default="json")
+    # suggest 用の閾値（指定されても build では無視される）
+    ap.add_argument("--threshold", type=float, default=0.65,
+                    help="候補として採用する最小スコア（suggest時）")
+    ap.add_argument("--strong-threshold", type=float, default=0.80,
+                    help="strong候補と見なすスコア（suggest時）")
     args = ap.parse_args()
 
     if args.cmd == "build":
         rules, G, unknown_refs, summary = build_graph(args.docs_root, args.rules)
         write_build_outputs(G, unknown_refs, summary, args.out, args.format)
     elif args.cmd == "suggest":
-        suggest_unknowns(args.docs_root, args.rules, args.out)
-
+        suggest_unknowns(args.docs_root, args.rules, args.out,
+                         threshold=args.threshold,
+                         strong_threshold=args.strong_threshold)
 if __name__ == "__main__":
     main()
