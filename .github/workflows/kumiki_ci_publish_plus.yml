@@ -36,9 +36,19 @@ jobs:
           pip install pyyaml mkdocs mkdocs-material networkx
 
       # --- Optional: Doc Lint (あれば実行、無ければスキップ) ---
-      - name: Doc Lint (optional)
+      - name: Run DocLint
         run: |
-          if [ -f tools/ci/doc_lint.py ]; then python tools/ci/doc_lint.py; else echo "no doc_lint.py"; fi
+          python tools/ci/doc_lint.py check --rules tools/docops_cli/config/doclint_rules.yml --out artifacts/doclint --format json,md
+      - name: Show DocLint summary
+        if: always()
+        run: |
+          echo "==== DocLint report ===="
+          cat artifacts/doclint/report.json || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docops-doclint
+          path: artifacts/doclint
+
 
       # --- Optional: Trace（buildのみ） ---
       - name: Trace build (optional)
